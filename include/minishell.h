@@ -48,6 +48,7 @@ typedef struct s_shell
 	int		last_exit_status;
 }	t_shell;
 
+// parser
 t_token	*tokenize(char *input);
 t_token	*new_token(char *value, t_token_type type);
 void	add_token(t_token **list, t_token *new);
@@ -58,13 +59,27 @@ t_cmd	*new_cmd(void);
 void	add_cmd(t_cmd **list, t_cmd *new);
 void	free_cmds(t_cmd *cmds);
 
+// builtin
 int		is_builtin(char *cmd);
 int		exec_builtin(t_cmd *cmd, t_shell *shell);
 
+// execute
 void	execute(t_cmd *cmds, t_shell *shell);
 
+// signal
 void	init_signals(void);
 
+// utils
 void	free_split(char **arr);
+void	free_tokens(t_token *tokens);
+void	free_cmds(t_cmd *cmds);
+int		arr_len(char **arr);
+char	**arr_add(char **arr, char *new_str);
+int		ft_strlen(char *s);
+char	*ft_strdup(char *s);
+int		ft_strcmp(char *s1, char *s2);
+int		is_space(char c);
+int		is_operator(char c);
+char	**ft_split(char *s, char c);
 
 #endif
