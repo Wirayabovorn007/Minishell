@@ -10,6 +10,9 @@ SRCS = \
 src/main.c \
 src/parser/tokenize_utils.c \
 src/parser/tokenize.c \
+src/parser/parser.c \
+src/parser/build_cmd.c \
+src/signal/signal.c \
 utils/array_utils.c \
 utils/free_utils.c \
 utils/ft_split.c \
