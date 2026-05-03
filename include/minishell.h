@@ -54,6 +54,7 @@ t_token	*new_token(char *value, t_token_type type);
 void	add_token(t_token **list, t_token *new);
 void	free_tokens(t_token *tokens);
 char	*get_word(char *s, int *i);
+int		syntax_check(t_token *tokens);
 
 t_cmd	*parse(t_token *tokens);
 t_cmd	*new_cmd(void);

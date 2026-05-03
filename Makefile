@@ -12,6 +12,7 @@ src/parser/tokenize_utils.c \
 src/parser/tokenize.c \
 src/parser/parser.c \
 src/parser/build_cmd.c \
+src/parser/syntax_check.c \
 src/signal/signal.c \
 utils/array_utils.c \
 utils/free_utils.c \
