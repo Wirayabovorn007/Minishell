@@ -14,6 +14,7 @@ src/parser/parser.c \
 src/parser/build_cmd.c \
 src/parser/syntax_check.c \
 src/parser/quote_utils.c \
+src/parser/env_utils.c \
 src/signal/signal.c \
 utils/array_utils.c \
 utils/free_utils.c \

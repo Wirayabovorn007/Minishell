@@ -57,6 +57,7 @@ char	*get_word(char *s, int *i);
 int		syntax_check(t_token *tokens);
 int		is_quote(char c);
 int		has_unclosed_quote(char *s);
+char	*get_env_value(char *str, t_shell *shell, int *i);
 
 t_cmd	*parse(t_token *tokens);
 t_cmd	*new_cmd(void);
@@ -82,8 +83,13 @@ char	**arr_add(char **arr, char *new_str);
 int		ft_strlen(char *s);
 char	*ft_strdup(char *s);
 int		ft_strcmp(char *s1, char *s2);
+char	*ft_substr(char *s, int start, int len);
+char	*ft_strjoin(char *s1, char *s2);
 int		is_space(char c);
 int		is_operator(char c);
+int		is_alpha(char c);
+int		is_digit(char c);
+int		is_alnum(char c);
 char	**ft_split(char *s, char c);
 
 #endif
