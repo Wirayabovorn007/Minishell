@@ -15,12 +15,13 @@ src/parser/build_cmd.c \
 src/parser/syntax_check.c \
 src/parser/quote_utils.c \
 src/parser/env_utils.c \
-src/signal/signal.c \
+src/parser/expand.c \
 utils/array_utils.c \
 utils/free_utils.c \
 utils/ft_split.c \
 utils/string_utils.c \
 utils/utils.c
+# src/signal/signal.c \
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 

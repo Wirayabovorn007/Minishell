@@ -58,6 +58,7 @@ int		syntax_check(t_token *tokens);
 int		is_quote(char c);
 int		has_unclosed_quote(char *s);
 char	*get_env_value(char *str, t_shell *shell, int *i);
+char	*expand_env(char *str, t_shell *shell);
 
 t_cmd	*parse(t_token *tokens);
 t_cmd	*new_cmd(void);

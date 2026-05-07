@@ -3,26 +3,14 @@
 int	main(void)
 {
 	char	*input;
-	char	*value;
-	int		i;
+	char	*expanded;
 	t_shell	shell;
 
-	(void)shell;
-
-	while ((input = readline("env_test$ ")))
+	while ((input = readline("expand_test$ ")))
 	{
-		i = 0;
-		while (input[i])
-		{
-			if (input[i] == '$')
-			{
-				value = get_env_value(input, &shell, &i);
-				printf("ENV VALUE: %s\n", value);
-				free(value);
-			}
-			else
-				i++;
-		}
+		expanded = expand_env(input, &shell);
+		printf("expanded: %s\n", expanded);
+		free(expanded);
 		free(input);
 	}
 	return (0);
