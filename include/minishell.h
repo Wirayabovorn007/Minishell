@@ -60,7 +60,7 @@ int		has_unclosed_quote(char *s);
 char	*get_env_value(char *str, t_shell *shell, int *i);
 char	*expand_env(char *str, t_shell *shell);
 
-t_cmd	*parse(t_token *tokens);
+t_cmd	*parse(t_token *tokens, t_shell *shell);
 t_cmd	*new_cmd(void);
 void	add_cmd(t_cmd **list, t_cmd *new);
 void	free_cmds(t_cmd *cmds);
@@ -92,5 +92,6 @@ int		is_alpha(char c);
 int		is_digit(char c);
 int		is_alnum(char c);
 char	**ft_split(char *s, char c);
+char	*word_dup(char *s, int start, int end);
 
 #endif

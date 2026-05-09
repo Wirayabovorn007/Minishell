@@ -19,7 +19,7 @@ static int	count_words(char *s, char c)
 	return (count);
 }
 
-static char	*word_dup(char *s, int start, int end)
+char	*word_dup(char *s, int start, int end)
 {
 	char	*word;
 	int		i;

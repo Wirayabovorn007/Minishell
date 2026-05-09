@@ -42,10 +42,16 @@ static void	handle_redir(t_cmd *cmd, t_token **tok)
 	*tok = (*tok)->next;
 }
 
-static void	process_token(t_cmd **current, t_cmd **cmds, t_token **tok)
+static void	process_token(t_cmd **current, t_cmd **cmds, t_token **tok, t_shell *shell)
 {
 	if ((*tok)->type == WORD)
-		add_arg(*current, (*tok)->value);
+	{
+		char	*expanded;
+
+		expanded = expand_env((*tok)->value, shell);
+		add_arg(*current, expanded);
+		free(expanded);
+	}
 	else if ((*tok)->type == PIPE)
 	{
 		*current = new_cmd();
@@ -55,7 +61,7 @@ static void	process_token(t_cmd **current, t_cmd **cmds, t_token **tok)
 		handle_redir(*current, tok);
 }
 
-t_cmd	*parse(t_token *tokens)
+t_cmd	*parse(t_token *tokens, t_shell *shell)
 {
 	t_cmd	*cmds;
 	t_cmd	*current;
@@ -65,7 +71,7 @@ t_cmd	*parse(t_token *tokens)
 	add_cmd(&cmds, current);
 	while (tokens)
 	{
-		process_token(&current, &cmds, &tokens);
+		process_token(&current, &cmds, &tokens, shell);
 		tokens = tokens->next;
 	}
 	return (cmds);

@@ -16,6 +16,7 @@ src/parser/syntax_check.c \
 src/parser/quote_utils.c \
 src/parser/env_utils.c \
 src/parser/expand.c \
+src/parser/quote_tokenize.c \
 utils/array_utils.c \
 utils/free_utils.c \
 utils/ft_split.c \

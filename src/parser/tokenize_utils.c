@@ -27,28 +27,3 @@ void	add_token(t_token **list, t_token *new)
 		tmp = tmp->next;
 	tmp->next = new;
 }
-
-static char	*word_dup(char *s, int start, int end)
-{
-	char	*word;
-	int		i;
-
-	i = 0;
-	word = malloc(sizeof(char) * (end - start + 1));
-	if (!word)
-		return (NULL);
-	while (start < end)
-		word[i++] = s[start++];
-	word[i] = '\0';
-	return (word);
-}
-
-char	*get_word(char *s, int *i)
-{
-	int	start;
-
-	start = *i;
-	while (s[*i] && !is_space(s[*i]) && !is_operator(s[*i]))
-		(*i)++;
-	return (word_dup(s, start, *i));
-}
