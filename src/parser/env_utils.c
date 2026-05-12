@@ -1,13 +1,8 @@
 #include "minishell.h"
 
-static int	env_name_len(char *s)
+static int	is_env_char(char c)
 {
-	int	i;
-
-	i = 0;
-	while (s[i] && (is_alnum(s[i]) || s[i] == '_'))
-		i++;
-	return (i);
+	return (is_alnum(c) || c == '_');
 }
 
 char	*get_env_value(char *str, t_shell *shell, int *i)
@@ -18,7 +13,9 @@ char	*get_env_value(char *str, t_shell *shell, int *i)
 
 	(void)shell;
 	(*i)++;
-	len = env_name_len(&str[*i]);
+	len = 0;
+	while (str[*i + len] && is_env_char(str[*i + len]))
+		len++;
 	name = ft_substr(str, *i, len);
 	value = getenv(name);
 	free(name);

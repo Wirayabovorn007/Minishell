@@ -23,7 +23,7 @@ static void	add_arg(t_cmd *cmd, char *value)
 	cmd->argv = new_argv;
 }
 
-static void	handle_redir(t_cmd *cmd, t_token **tok)
+void	handle_redir(t_cmd *cmd, t_token **tok)
 {
 	if ((*tok)->type == REDIR_OUT)
 		cmd->outfile = ft_strdup((*tok)->next->value);
@@ -38,27 +38,42 @@ static void	handle_redir(t_cmd *cmd, t_token **tok)
 	{
 		cmd->delimiter = ft_strdup((*tok)->next->value);
 		cmd->heredoc = 1;
+		if ((*tok)->next->quote != NO_QUOTE)
+			cmd->heredoc_quoted = 1;
 	}
 	*tok = (*tok)->next;
 }
 
-static void	process_token(t_cmd **current, t_cmd **cmds, t_token **tok, t_shell *shell)
+static void	extract_and_add_arg(t_cmd *cmd, char *str, int start, int end)
 {
-	if ((*tok)->type == WORD)
-	{
-		char	*expanded;
+	char	*word;
+	char	*clean;
 
-		expanded = expand_env((*tok)->value, shell);
-		add_arg(*current, expanded);
-		free(expanded);
-	}
-	else if ((*tok)->type == PIPE)
+	word = ft_substr(str, start, end - start);
+	clean = remove_quotes(word);
+	add_arg(cmd, clean);
+	free(word);
+	free(clean);
+}
+
+void	split_and_add_args(t_cmd *cmd, char *str)
+{
+	int	i;
+	int	start;
+
+	if (!str || !*str)
+		return ;
+	i = 0;
+	while (str[i])
 	{
-		*current = new_cmd();
-		add_cmd(cmds, *current);
+		while (str[i] && is_space(str[i]))
+			i++;
+		if (!str[i])
+			break ;
+		start = i;
+		skip_word(str, &i);
+		extract_and_add_arg(cmd, str, start, i);
 	}
-	else
-		handle_redir(*current, tok);
 }
 
 t_cmd	*parse(t_token *tokens, t_shell *shell)

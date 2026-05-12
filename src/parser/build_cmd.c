@@ -14,6 +14,7 @@ t_cmd	*new_cmd(void)
 	cmd->heredoc = 0;
 	cmd->delimiter = NULL;
 	cmd->next = NULL;
+	cmd->heredoc_quoted = 0;
 	return (cmd);
 }
 

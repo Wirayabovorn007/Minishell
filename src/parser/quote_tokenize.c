@@ -1,38 +1,24 @@
 #include "minishell.h"
 
-static char	*quoted_word(char *s, int *i)
-{
-	char	quote;
-	int		start;
-	char	*word;
-
-	quote = s[*i];
-	(*i)++;
-	start = *i;
-	while (s[*i] && s[*i] != quote)
-		(*i)++;
-	word = word_dup(s, start, *i);
-	if (s[*i] == quote)
-		(*i)++;
-	return (word);
-}
-
-static char	*normal_word(char *s, int *i)
+char	*get_word(char *s, int *i, int *quote)
 {
 	int	start;
+	int	sq;
+	int	dq;
 
 	start = *i;
-	while (s[*i]
-		&& !is_space(s[*i])
-		&& !is_operator(s[*i])
-		&& !is_quote(s[*i]))
+	sq = 0;
+	dq = 0;
+	*quote = NO_QUOTE;
+	while (s[*i])
+	{
+		if (s[*i] == '\'' && !dq)
+			sq = !sq;
+		else if (s[*i] == '"' && !sq)
+			dq = !dq;
+		else if (!sq && !dq && (is_space(s[*i]) || is_operator(s[*i])))
+			break ;
 		(*i)++;
-	return (word_dup(s, start, *i));
-}
-
-char	*get_word(char *s, int *i)
-{
-	if (is_quote(s[*i]))
-		return (quoted_word(s, i));
-	return (normal_word(s, i));
+	}
+	return (ft_substr(s, start, *i - start));
 }

@@ -12,6 +12,10 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+# define NO_QUOTE 0
+# define SINGLE_QUOTE 1
+# define DOUBLE_QUOTE 2
+
 extern int	g_signal;
 
 typedef enum e_token_type
@@ -28,6 +32,7 @@ typedef struct s_token
 {
 	char			*value;
 	t_token_type	type;
+	int				quote;
 	struct s_token	*next;
 }	t_token;
 
@@ -39,6 +44,7 @@ typedef struct s_cmd
 	int				append;
 	int				heredoc;
 	char			*delimiter;
+	int				heredoc_quoted;
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -50,15 +56,20 @@ typedef struct s_shell
 
 // parser
 t_token	*tokenize(char *input);
-t_token	*new_token(char *value, t_token_type type);
+t_token	*new_token(char *value, t_token_type type, int quote);
 void	add_token(t_token **list, t_token *new);
 void	free_tokens(t_token *tokens);
-char	*get_word(char *s, int *i);
+void	process_token(t_cmd **cur, t_cmd **cmd, t_token **t, t_shell *sh);
+char	*get_word(char *s, int *i, int *quote);
+void	skip_word(char *str, int *i);
 int		syntax_check(t_token *tokens);
 int		is_quote(char c);
+char	*remove_quotes(char *s);
 int		has_unclosed_quote(char *s);
 char	*get_env_value(char *str, t_shell *shell, int *i);
 char	*expand_env(char *str, t_shell *shell);
+void	split_and_add_args(t_cmd *cmd, char *str);
+void	handle_redir(t_cmd *cmd, t_token **tok);
 
 t_cmd	*parse(t_token *tokens, t_shell *shell);
 t_cmd	*new_cmd(void);
@@ -79,6 +90,7 @@ void	init_signals(void);
 void	free_split(char **arr);
 void	free_tokens(t_token *tokens);
 void	free_cmds(t_cmd *cmds);
+char	*join_and_free(char *s1, char *s2);
 int		arr_len(char **arr);
 char	**arr_add(char **arr, char *new_str);
 int		ft_strlen(char *s);
@@ -93,5 +105,6 @@ int		is_digit(char c);
 int		is_alnum(char c);
 char	**ft_split(char *s, char c);
 char	*word_dup(char *s, int start, int end);
+char	*ft_itoa(int nbr);
 
 #endif

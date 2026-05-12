@@ -43,3 +43,13 @@ void	free_cmds(t_cmd *cmds)
 		cmds = tmp;
 	}
 }
+
+char	*join_and_free(char *s1, char *s2)
+{
+	char	*new;
+
+	new = ft_strjoin(s1, s2);
+	free(s1);
+	free(s2);
+	return (new);
+}

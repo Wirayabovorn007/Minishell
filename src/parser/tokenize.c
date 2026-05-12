@@ -4,7 +4,7 @@ static int	handle_pipe(char *input, int *i, t_token **tokens)
 {
 	if (input[*i] == '|')
 	{
-		add_token(tokens, new_token("|", PIPE));
+		add_token(tokens, new_token("|", PIPE, NO_QUOTE));
 		(*i)++;
 		return (1);
 	}
@@ -17,12 +17,12 @@ static int	handle_redir_out(char *input, int *i, t_token **tok)
 	{
 		if (input[*i + 1] == '>')
 		{
-			add_token(tok, new_token(">>", APPEND));
+			add_token(tok, new_token(">>", APPEND, NO_QUOTE));
 			*i += 2;
 		}
 		else
 		{
-			add_token(tok, new_token(">", REDIR_OUT));
+			add_token(tok, new_token(">", REDIR_OUT, NO_QUOTE));
 			(*i)++;
 		}
 		return (1);
@@ -36,12 +36,12 @@ static int	handle_redir_in(char *input, int *i, t_token **tok)
 	{
 		if (input[*i + 1] == '<')
 		{
-			add_token(tok, new_token("<<", HEREDOC));
+			add_token(tok, new_token("<<", HEREDOC, NO_QUOTE));
 			*i += 2;
 		}
 		else
 		{
-			add_token(tok, new_token("<", REDIR_IN));
+			add_token(tok, new_token("<", REDIR_IN, NO_QUOTE));
 			(*i)++;
 		}
 		return (1);
@@ -52,9 +52,10 @@ static int	handle_redir_in(char *input, int *i, t_token **tok)
 static void	handle_word(char *input, int *i, t_token **tokens)
 {
 	char	*word;
+	int		quote;
 
-	word = get_word(input, i);
-	add_token(tokens, new_token(word, WORD));
+	word = get_word(input, i, &quote);
+	add_token(tokens, new_token(word, WORD, quote));
 	free(word);
 }
 

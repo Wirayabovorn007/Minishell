@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static void print_cmds(t_cmd *cmds)
+static void	print_cmds(t_cmd *cmds)
 {
 	t_cmd	*tmp;
 	int		i;
@@ -27,37 +27,43 @@ static void print_cmds(t_cmd *cmds)
 	}
 }
 
+static void	process_input(char *input, t_shell *shell)
+{
+	t_token	*tokens;
+	t_cmd	*cmds;
+
+	if (has_unclosed_quote(input))
+	{
+		printf("unclosed quote\n");
+		return ;
+	}
+	tokens = tokenize(input);
+	if (!syntax_check(tokens))
+	{
+		free_tokens(tokens);
+		return ;
+	}
+	cmds = parse(tokens, shell);
+	print_cmds(cmds);
+	free_tokens(tokens);
+	free_cmds(cmds);
+}
+
 int	main(void)
 {
 	char	*input;
-	t_token	*tokens;
-	t_cmd	*cmds;
 	t_shell	shell;
 
+	shell.last_exit_status = 0;
+	shell.envp = NULL;
 	while (1)
 	{
 		input = readline("minishell$ ");
 		if (!input)
-			break;
+			break ;
 		if (*input)
 			add_history(input);
-		if (has_unclosed_quote(input))
-		{
-			printf("unclosed quote\n");
-			free(input);
-			continue;
-		}
-		tokens = tokenize(input);
-		if (!syntax_check(tokens))
-		{
-			free_tokens(tokens);
-			free(input);
-			continue;
-		}
-		cmds = parse(tokens, &shell);
-		print_cmds(cmds);
-		free_tokens(tokens);
-		free_cmds(cmds);
+		process_input(input, &shell);
 		free(input);
 	}
 	return (0);
