@@ -17,6 +17,14 @@ src/parser/quote_utils.c \
 src/parser/env_utils.c \
 src/parser/expand.c \
 src/parser/quote_tokenize.c \
+src/builtins/builtin.c \
+src/builtins/echo.c \
+src/builtins/pwd.c \
+src/builtins/env.c \
+src/builtins/cd.c \
+src/builtins/exit.c \
+src/builtins/export.c \
+src/builtins/unset.c \
 utils/array_utils.c \
 utils/free_utils.c \
 utils/ft_itoa.c \
