@@ -8,6 +8,8 @@
 # include <signal.h>
 # include <sys/wait.h>
 # include <sys/types.h>
+# include <string.h>
+# include <errno.h>
 
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -79,6 +81,12 @@ void	free_cmds(t_cmd *cmds);
 // builtin
 int		is_builtin(char *cmd);
 int		exec_builtin(t_cmd *cmd, t_shell *shell);
+int		builtin_echo(char **argv);
+int		builtin_pwd(void);
+int		builtin_env(t_shell *shell);
+int		builtin_cd(char **argv, t_shell *shell);
+int		builtin_exit(char **argv, t_shell *shell);
+int		builtin_export(char **argv, t_shell *shell);
 
 // execute
 void	execute(t_cmd *cmds, t_shell *shell);
