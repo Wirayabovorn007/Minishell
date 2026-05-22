@@ -10,6 +10,7 @@
 # include <sys/types.h>
 # include <string.h>
 # include <errno.h>
+# include <limits.h>
 
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -70,23 +71,35 @@ char	*remove_quotes(char *s);
 int		has_unclosed_quote(char *s);
 char	*get_env_value(char *str, t_shell *shell, int *i);
 char	*expand_env(char *str, t_shell *shell);
+int		env_len(char **env);
 void	split_and_add_args(t_cmd *cmd, char *str);
 void	handle_redir(t_cmd *cmd, t_token **tok);
-
 t_cmd	*parse(t_token *tokens, t_shell *shell);
 t_cmd	*new_cmd(void);
 void	add_cmd(t_cmd **list, t_cmd *new);
 void	free_cmds(t_cmd *cmds);
+void	free_envp(char **envp);
 
 // builtin
 int		is_builtin(char *cmd);
-int		exec_builtin(t_cmd *cmd, t_shell *shell);
+int		exec_builtin(t_cmd *cmd, t_shell *shell, int is_single_cmd);
 int		builtin_echo(char **argv);
 int		builtin_pwd(void);
 int		builtin_env(t_shell *shell);
 int		builtin_cd(char **argv, t_shell *shell);
-int		builtin_exit(char **argv, t_shell *shell);
-int		builtin_export(char **argv, t_shell *shell);
+int		builtin_exit(char **argv, t_shell *shell, int is_single_cmd);
+int		builtin_export(char **argv, char ***env);
+int		builtin_unset(char **argv, t_shell *shell);
+int		add_or_update_env(t_shell *shell, char *key, char *value);
+char	*get_env_val(char **envp, char *key);
+int		init_env(t_shell *shell, char **sys_envp);
+int		is_valid_identifier(char *str);
+int		find_env(char **env, char *key);
+void	print_export(char **env);
+void	sort_env(char **env);
+char	**copy_env(char **env);
+void	print_export_error(char *arg);
+int		has_equal_sign(char *arg);
 
 // execute
 void	execute(t_cmd *cmds, t_shell *shell);
@@ -101,6 +114,8 @@ void	free_cmds(t_cmd *cmds);
 char	*join_and_free(char *s1, char *s2);
 int		arr_len(char **arr);
 char	**arr_add(char **arr, char *new_str);
+void	free_arr(char **arr);
+void	swap(char **a, char **b);
 int		ft_strlen(char *s);
 char	*ft_strdup(char *s);
 int		ft_strcmp(char *s1, char *s2);
@@ -114,5 +129,6 @@ int		is_alnum(char c);
 char	**ft_split(char *s, char c);
 char	*word_dup(char *s, int start, int end);
 char	*ft_itoa(int nbr);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
 #endif

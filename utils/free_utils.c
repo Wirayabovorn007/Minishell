@@ -53,3 +53,16 @@ char	*join_and_free(char *s1, char *s2)
 	free(s2);
 	return (new);
 }
+
+void	free_envp(char **envp)
+{
+	int	i;
+
+	i = 0;
+	while (envp[i])
+	{
+		free(envp[i]);
+		i++;
+	}
+	free(envp);
+}

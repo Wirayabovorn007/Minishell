@@ -25,10 +25,13 @@ src/builtins/cd.c \
 src/builtins/exit.c \
 src/builtins/export.c \
 src/builtins/unset.c \
+src/builtins/builtins_utils.c \
+src/builtins/export_utils.c \
 utils/array_utils.c \
 utils/free_utils.c \
 utils/ft_itoa.c \
 utils/ft_split.c \
+utils/ft_strncmp.c \
 utils/string_utils.c \
 utils/utils.c
 # src/signal/signal.c \
