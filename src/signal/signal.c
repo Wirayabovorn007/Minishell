@@ -23,7 +23,7 @@ void	init_signals(void)
 	sa_int.sa_handler = sigint_handler;
 	sigaction(SIGINT, &sa_int, NULL);
 
-	// ctrl+/ does nothing (for Interactive mode)
+	// ctrl+\ does nothing (for Interactive mode)
 	sigemptyset(&sa_quit.sa_mask);
 	sa_quit.sa_flags = SA_RESTART;
 	sa_quit.sa_handler = SIG_IGN;
