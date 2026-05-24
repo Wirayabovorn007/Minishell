@@ -1,12 +1,15 @@
 #include "minishell.h"
 
 
-int	g_signal =0;
+int	g_signal = 0;
 
-void	handle_sigint(int sig)
+void	sigint_handler(int sig)
 {
 	g_signal = sig;
-
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
 void	init_signals(void)
@@ -15,14 +18,16 @@ void	init_signals(void)
 	struct sigaction sa_quit;
 
 	// ctrl+c sigint
-	sigemptyset(&sa_int.sa_mask)
+	sigemptyset(&sa_int.sa_mask);
 	sa_int.sa_flags = SA_RESTART;
-	sa_int.sa_handler = handle_sigint;
+	sa_int.sa_handler = sigint_handler;
 	sigaction(SIGINT, &sa_int, NULL);
 
-	// ctrl+/ does nothing for Interactive mode only 
+	// ctrl+/ does nothing (for Interactive mode)
 	sigemptyset(&sa_quit.sa_mask);
 	sa_quit.sa_flags = SA_RESTART;
 	sa_quit.sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &sa_quit, NULL);
+
+
 }

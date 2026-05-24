@@ -33,8 +33,8 @@ utils/ft_itoa.c \
 utils/ft_split.c \
 utils/ft_strncmp.c \
 utils/string_utils.c \
-utils/utils.c
-# src/signal/signal.c \
+utils/utils.c \
+src/signal/signal.c \
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 

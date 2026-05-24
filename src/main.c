@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	g_signal = 0;
+extern int g_signal;
 
 // static void	run_test_cmd(t_cmd *cmds, t_shell *shell)
 // {
@@ -73,6 +73,7 @@ int	main(int argc, char **argv, char **envp)
 		write(2, "minishell: Error initializing environment\n", 42);
 		return (1);
 	}
+	init_signals();
 	shell_loop(&shell);
 	free_envp(shell.envp);
 	rl_clear_history();
