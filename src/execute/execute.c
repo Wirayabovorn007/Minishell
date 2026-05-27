@@ -31,14 +31,29 @@ void	execute_single_cmd(t_cmd *cmd, t_shell *shell)
 
 void	execute(t_cmd *cmds, t_shell *shell)
 {
+	int	saved_stdin;
+	int	saved_stdout;
+
 	if (!cmds)
 		return ;
 	if (is_single_builtin(cmds))
-		shell->last_exit_status = exec_builtin(cmds, shell, 1);
+	{
+		saved_stdin = dup(STDERR_FILENO);
+		saved_stdout = dup(STDERR_FILENO);
+		if (setup_redirection(cmds) == 0)
+			shell->last_exit_status = exec_builtin(cmds, shell, 1);
+		else
+			shell->last_exit_status = 1;
+		dup2(saved_stdin, STDIN_FILENO);
+		dup2(saved_stdout, STDOUT_FILENO);
+		close(saved_stdin);
+		close(saved_stdout);
+	}
 	else if (!cmds->next)
 		execute_single_cmd(cmds, shell);
 	// else
 	// {
-	//  execute_pipes()
+	// execute_pipe()
 	// }
+
 }
