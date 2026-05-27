@@ -38,8 +38,8 @@ void	execute(t_cmd *cmds, t_shell *shell)
 		return ;
 	if (is_single_builtin(cmds))
 	{
-		saved_stdin = dup(STDERR_FILENO);
-		saved_stdout = dup(STDERR_FILENO);
+		saved_stdin = dup(STDIN_FILENO);
+		saved_stdout = dup(STDOUT_FILENO);
 		if (setup_redirection(cmds) == 0)
 			shell->last_exit_status = exec_builtin(cmds, shell, 1);
 		else
