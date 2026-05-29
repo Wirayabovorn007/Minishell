@@ -38,6 +38,7 @@ utils/exec_utils.c \
 src/signal/signal.c \
 src/execute/execute.c \
 src/execute/redirect.c \
+src/execute/heredoc.c \
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 

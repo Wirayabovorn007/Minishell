@@ -6,7 +6,15 @@ int setup_redirection(t_cmd *cmd)
 	int	fd_in;
 	int	fd_out;
 
-	if (cmd->infile)
+	if (cmd->delimiter)
+	{
+		fd_in = handle_heredoc(cmd->delimiter);
+		if (fd_in < 0)
+			return 1;
+		dup2(fd_in, STDIN_FILENO);
+		close(fd_in);
+	}
+	else if (cmd->infile)
 	{
 		fd_in = open(cmd->infile, O_RDONLY);
 		if (fd_in < 0) {
