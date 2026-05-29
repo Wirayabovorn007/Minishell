@@ -6,6 +6,7 @@ void	execute_single_cmd(t_cmd *cmd, t_shell *shell)
 {
 	pid_t	pid;
 	int		status;
+	char *cmd_path;
 
 	pid = fork();
 	if (pid == 0)
@@ -16,8 +17,16 @@ void	execute_single_cmd(t_cmd *cmd, t_shell *shell)
 			exit(exec_builtin(cmd, shell, 1));
 		else
 		{
-			printf("minishell: \n%s: command not found\n", cmd->argv[0]);
-			exit(127);
+			cmd_path = get_cmd_path(cmd->argv[0], shell->envp);
+			if (!cmd_path)
+			{
+				printf("minishell: \n%s: command not found\n", cmd->argv[0]);
+				exit(127);
+			}
+			execve(cmd_path, cmd->argv, shell->envp);
+			perror("minishell: execve");
+			free(cmd_path);
+			exit(126);
 		}
 	}
 	else

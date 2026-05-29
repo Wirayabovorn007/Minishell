@@ -105,6 +105,7 @@ int		has_equal_sign(char *arg);
 void	execute(t_cmd *cmds, t_shell *shell);
 int		setup_redirection(t_cmd *cmd);
 int	handle_heredoc(char *delimiter);
+char *get_cmd_path(char *cmd, char **envp);
 
 // signal
 void	init_signals(void);
@@ -133,5 +134,6 @@ char	*word_dup(char *s, int start, int end);
 char	*ft_itoa(int nbr);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		is_single_builtin(t_cmd *cmds);
+char	*ft_strchr(char *str, char c);
 
 #endif
