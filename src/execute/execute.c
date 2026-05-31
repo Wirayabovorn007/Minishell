@@ -34,7 +34,7 @@ void	execute_single_cmd(t_cmd *cmd, t_shell *shell)
 	else
 	{
 		signal(SIGINT, SIG_IGN);
-		signal(SIGINT, SIG_IGN);
+		signal(SIGQUIT, SIG_IGN);
 		waitpid(pid, &status, 0);
 		init_signals();
 		if (WIFEXITED(status))
