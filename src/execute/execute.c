@@ -11,6 +11,8 @@ void	execute_single_cmd(t_cmd *cmd, t_shell *shell)
 	pid = fork();
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		if (setup_redirection(cmd) != 0)
 			exit(1);
 		if (is_builtin(cmd->argv[0]))
@@ -31,9 +33,20 @@ void	execute_single_cmd(t_cmd *cmd, t_shell *shell)
 	}
 	else
 	{
+		signal(SIGINT, SIG_IGN);
+		signal(SIGINT, SIG_IGN);
 		waitpid(pid, &status, 0);
+		init_signals();
 		if (WIFEXITED(status))
 			shell->last_exit_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+		{
+			shell->last_exit_status = 128 + WTERMSIG(status);
+			if (WTERMSIG(status) == SIGQUIT)
+				write(1, "Quit (core dumped)\n", 19);
+			else if (WTERMSIG(status) == SIGINT)
+				write(1, "\n", 1);
+		}
 	}
 }
 

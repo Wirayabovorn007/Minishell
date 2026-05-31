@@ -4,6 +4,7 @@
 void execute_pipe(t_cmd *cmds, t_shell *shell)
 {
 	int	fd[2];
+	int	wait_res;
 	int	prev_fd;
 	pid_t	pid;
 	int		status;
@@ -58,9 +59,24 @@ void execute_pipe(t_cmd *cmds, t_shell *shell)
 		}
 		curr = curr->next;
 	}
-	while (waitpid(-1, &status, 0) > 0)
-		;
-	if (WIFEXITED(status))
-		shell->last_exit_status = WEXITSTATUS(status);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	while ((wait_res = waitpid(-1, &status, 0)) > 0)
+	{
+		if (wait_res == pid)
+		{
+			if (WIFEXITED(status))
+				shell->last_exit_status = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+			{
+				shell->last_exit_status = 128 + WTERMSIG(status);
+				if (WTERMSIG(status) == SIGQUIT)
+					write(1, "Quit (core dumped)\n", 19);
+				else if (WTERMSIG(status) == SIGINT)
+					write(1, "\n", 1);
+			}
+		}
+	}
+	init_signals();
 }
 
