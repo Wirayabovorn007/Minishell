@@ -60,9 +60,7 @@ void	execute(t_cmd *cmds, t_shell *shell)
 	}
 	else if (!cmds->next)
 		execute_single_cmd(cmds, shell);
-	// else
-	// {
-	// execute_pipe()
-	// }
+	else
+		execute_pipe(cmds, shell);
 
 }

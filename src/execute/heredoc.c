@@ -1,13 +1,22 @@
 
 #include "minishell.h"
 
-int	handle_heredoc(char *delimiter)
+void	show_warn(char *delimiter, char *cmd)
+{
+	if (strcmp(cmd, "echo") == 0)
+		printf("minishell: warning: here-document delimited by end-of-file (wanted `%s')\n", delimiter);
+}
+
+
+int	handle_heredoc(t_cmd *cmd)
 {
 	int	fd[2];
 	pid_t	pid;
 	char *line;
 	int	status;
+	char *delimiter;
 
+	delimiter = cmd->delimiter;
 	if (pipe(fd) == -1)
 	{
 		perror("minishell: pipe");
@@ -23,7 +32,7 @@ int	handle_heredoc(char *delimiter)
 			line = readline("> ");
 			if (!line)
 			{
-				printf("minishell: warning: here-document delimited by end-of-file (wanted `%s')\n", delimiter);
+				show_warn(delimiter, cmd->argv[0]);
 				break ;
 			}
 			if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0

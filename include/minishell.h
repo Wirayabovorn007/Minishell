@@ -104,8 +104,9 @@ int		has_equal_sign(char *arg);
 // execute
 void	execute(t_cmd *cmds, t_shell *shell);
 int		setup_redirection(t_cmd *cmd);
-int	handle_heredoc(char *delimiter);
+int	handle_heredoc(t_cmd *cmd);
 char *get_cmd_path(char *cmd, char **envp);
+void execute_pipe(t_cmd *cmds, t_shell *shell);
 
 // signal
 void	init_signals(void);

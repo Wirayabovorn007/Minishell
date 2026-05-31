@@ -8,7 +8,7 @@ int setup_redirection(t_cmd *cmd)
 
 	if (cmd->delimiter)
 	{
-		fd_in = handle_heredoc(cmd->delimiter);
+		fd_in = handle_heredoc(cmd);
 		if (fd_in < 0)
 			return 1;
 		dup2(fd_in, STDIN_FILENO);

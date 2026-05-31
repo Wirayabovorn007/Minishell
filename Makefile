@@ -40,6 +40,7 @@ src/execute/execute.c \
 src/execute/redirect.c \
 src/execute/heredoc.c \
 src/execute/get_path.c \
+src/execute/exec_pipe.c \
 
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
