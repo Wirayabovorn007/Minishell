@@ -28,6 +28,8 @@ static void	process_input(char *line, t_shell *shell)
 		return ;
 	}
 	tokens = tokenize(line);
+	if (!tokens)
+		return ;
 	if (!syntax_check(tokens))
 	{
 		shell->last_exit_status = 2;

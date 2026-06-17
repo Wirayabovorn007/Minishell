@@ -15,6 +15,8 @@ void	execute_single_cmd(t_cmd *cmd, t_shell *shell)
 		signal(SIGQUIT, SIG_DFL);
 		if (setup_redirection(cmd) != 0)
 			exit(1);
+		if (!cmd->argv || !cmd->argv[0])
+			exit(0);
 		if (is_builtin(cmd->argv[0]))
 			exit(exec_builtin(cmd, shell, 1));
 		else
