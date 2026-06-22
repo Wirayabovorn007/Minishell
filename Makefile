@@ -34,9 +34,9 @@ utils/ft_split.c \
 utils/ft_strncmp.c \
 utils/string_utils.c \
 utils/utils.c \
-utils/exec_utils.c \
 src/signal/signal.c \
 src/execute/execute.c \
+src/execute/exec_utils.c \
 src/execute/redirect.c \
 src/execute/heredoc.c \
 src/execute/get_path.c \

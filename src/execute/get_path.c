@@ -1,5 +1,5 @@
-
 #include "minishell.h"
+
 
 static char *get_env_path(char **envp)
 {
@@ -12,24 +12,26 @@ static char *get_env_path(char **envp)
 			return (envp[i] + 5);
 		i++;
 	}
-	return NULL;
+}
+
+char	*direct_cmd_path(char *cmd)
+{
+	if (access(cmd, X_OK) == 0)
+		return (ft_strdup(cmd));
+	return (NULL);
 }
 
 char *get_cmd_path(char *cmd, char **envp)
 {
-	char **paths;
-	char *path;
-	char *part_path;
+	char	**paths;
+	char	*path;
+	char	*part_path;
 	int		i;
-	
+
 	if (ft_strchr(cmd, '/'))
-	{
-		if (access(cmd, X_OK) == 0)
-			return (ft_strdup(cmd));
-		return NULL;
-	}
+		return (direct_cmd_path(cmd));
 	if (!get_env_path(envp))
-		return NULL;
+		return (NULL);
 	paths = ft_split(get_env_path(envp), ':');
 	i = -1;
 	while (paths && paths[++i])
@@ -39,7 +41,7 @@ char *get_cmd_path(char *cmd, char **envp)
 		free(part_path);
 		if (access(path, X_OK) == 0)
 		{
-			free_arr(paths);
+			free(paths);
 			return (path);
 		}
 		free(path);
