@@ -2,20 +2,6 @@
 
 extern int g_signal;
 
-// static void	run_test_cmd(t_cmd *cmds, t_shell *shell)
-// {
-// 	if (cmds && cmds->argv && cmds->argv[0])
-// 	{
-// 		if (is_builtin(cmds->argv[0]))
-// 			shell->last_exit_status = exec_builtin(cmds, shell, 1);
-// 		else
-// 		{
-// 			printf("minishell: %s: command not found\n", cmds->argv[0]);
-// 			shell->last_exit_status = 127;
-// 		}
-// 	}
-// }
-
 static void	process_input(char *line, t_shell *shell)
 {
 	t_token	*tokens;
@@ -39,7 +25,6 @@ static void	process_input(char *line, t_shell *shell)
 	cmds = parse(tokens, shell);
 	free_tokens(tokens);
 	execute(cmds, shell);
-	// run_test_cmd(cmds, shell);
 	free_cmds(cmds);
 }
 
