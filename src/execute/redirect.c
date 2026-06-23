@@ -67,7 +67,16 @@ int	setup_redirection(t_cmd *cmd)
 	}
 	if (check_heredoc(cmd, &fd_in) != 0)
 		return (1);
-	else if (check_input(cmd, &fd_in) != 0)
+	if (cmd->redir_error)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd->redir_error_file, 2);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(strerror(cmd->redir_errno), 2);
+		ft_putstr_fd("\n", 2);
+		return (1);
+	}
+	if (check_input(cmd, &fd_in) != 0)
 		return (1);
 	if (check_output(cmd, &fd_out) != 0)
 		return (1);

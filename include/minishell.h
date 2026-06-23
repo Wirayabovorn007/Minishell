@@ -50,6 +50,9 @@ typedef struct s_cmd
 	int				heredoc_quoted;
 	int				ambiguous_redir;
 	char			*ambig_target;
+	int				redir_error;
+	int				redir_errno;
+	char			*redir_error_file;
 	struct s_cmd	*next;
 }	t_cmd;
 
