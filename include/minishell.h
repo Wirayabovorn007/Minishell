@@ -48,6 +48,8 @@ typedef struct s_cmd
 	int				heredoc;
 	char			*delimiter;
 	int				heredoc_quoted;
+	int				ambiguous_redir;
+	char			*ambig_target;
 	struct s_cmd	*next;
 }	t_cmd;
 

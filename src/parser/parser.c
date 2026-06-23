@@ -25,9 +25,16 @@ static void	add_arg(t_cmd *cmd, char *value)
 
 void	handle_redir(t_cmd *cmd, t_token **tok)
 {
+	t_token	*next_tok;
 	char	*clean_val;
 
+	next_tok = (*tok)->next;
 	clean_val = remove_quotes((*tok)->next->value);
+	if (next_tok->quote == NO_QUOTE && ft_strchr(next_tok->value, '*'))
+	{
+		cmd->ambiguous_redir = 1;
+		cmd->ambig_target = clean_val;
+	}
 	if ((*tok)->type == REDIR_OUT)
 		cmd->outfile = clean_val;
 	else if ((*tok)->type == APPEND)
@@ -44,7 +51,7 @@ void	handle_redir(t_cmd *cmd, t_token **tok)
 		if ((*tok)->next->quote != NO_QUOTE)
 			cmd->heredoc_quoted = 1;
 	}
-	*tok = (*tok)->next;
+	*tok = next_tok;
 }
 
 static void	extract_and_add_arg(t_cmd *cmd, char *str, int start, int end)
