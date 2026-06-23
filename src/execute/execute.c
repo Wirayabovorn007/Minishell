@@ -19,7 +19,6 @@ void	handle_cmd_child(t_cmd *cmd, t_shell *shell)
 		cmd_path = get_cmd_path(cmd->argv[0], shell->envp);
 		if (!cmd_path)
 		{
-			ft_putstr_fd("minishell: ", 2);
 			ft_putstr_fd(cmd->argv[0], 2);
 			ft_putstr_fd(": command not found\n", 2);
 			exit(127);

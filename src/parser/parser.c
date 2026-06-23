@@ -25,18 +25,21 @@ static void	add_arg(t_cmd *cmd, char *value)
 
 void	handle_redir(t_cmd *cmd, t_token **tok)
 {
+	char	*clean_val;
+
+	clean_val = remove_quotes((*tok)->next->value);
 	if ((*tok)->type == REDIR_OUT)
-		cmd->outfile = ft_strdup((*tok)->next->value);
+		cmd->outfile = clean_val;
 	else if ((*tok)->type == APPEND)
 	{
-		cmd->outfile = ft_strdup((*tok)->next->value);
+		cmd->outfile = clean_val;
 		cmd->append = 1;
 	}
 	else if ((*tok)->type == REDIR_IN)
-		cmd->infile = ft_strdup((*tok)->next->value);
+		cmd->infile = clean_val;
 	else if ((*tok)->type == HEREDOC)
 	{
-		cmd->delimiter = ft_strdup((*tok)->next->value);
+		cmd->delimiter = clean_val;
 		cmd->heredoc = 1;
 		if ((*tok)->next->quote != NO_QUOTE)
 			cmd->heredoc_quoted = 1;

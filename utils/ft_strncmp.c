@@ -17,14 +17,7 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 
 void	ft_putstr_fd(char *str, int fd)
 {
-	int	i;
-
-	i = 0;
 	if (!str || fd < 0)
 		return ;
-	while (str[i])
-	{
-		write(fd, &str[i], 1);
-		i++;
-	}
+	write(fd, str, ft_strlen(str));
 }

@@ -20,7 +20,10 @@ int check_input(t_cmd *cmd, int *fd_in)
 	if (*fd_in < 0)
 	{
 		ft_putstr_fd("minishell: ", 2);
-		perror(cmd->infile);
+		ft_putstr_fd(cmd->infile, 2);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(strerror(errno), 2);
+		ft_putstr_fd("\n", 2);
 		return (1);
 	}
 	dup2(*fd_in, STDIN_FILENO);
@@ -39,7 +42,10 @@ int check_output(t_cmd *cmd, int *fd_out)
 	if (*fd_out < 0)
 	{
 		ft_putstr_fd("minishell: ", 2);
-		perror(cmd->outfile);
+		ft_putstr_fd(cmd->outfile, 2);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(strerror(errno), 2);
+		ft_putstr_fd("\n", 2);
 		return (1);
 	}
 	dup2(*fd_out, STDOUT_FILENO);
