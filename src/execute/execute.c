@@ -83,7 +83,7 @@ void	execute(t_cmd *cmds, t_shell *shell)
 		close(saved_stdout);
 	} 
 	else if (!cmds->next)
-		execute_single_cmd(shell, cmds);
+		execute_single_cmd(cmds, shell);
 	else
 		execute_pipe(cmds, shell);
 }

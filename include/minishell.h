@@ -107,6 +107,7 @@ int		setup_redirection(t_cmd *cmd);
 int	handle_heredoc(char *delimiter);
 char *get_cmd_path(char *cmd, char **envp);
 void execute_pipe(t_cmd *cmds, t_shell *shell);
+char	*call_cmd_path(char *cmd, char **envp);
 
 // signal
 void	init_signals(void);

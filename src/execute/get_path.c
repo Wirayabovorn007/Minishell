@@ -12,6 +12,7 @@ static char *get_env_path(char **envp)
 			return (envp[i] + 5);
 		i++;
 	}
+	return NULL;
 }
 
 char	*direct_cmd_path(char *cmd)
@@ -48,4 +49,17 @@ char *get_cmd_path(char *cmd, char **envp)
 	}
 	free_arr(paths);
 	return (NULL);
+}
+
+char	*call_cmd_path(char *cmd, char **envp)
+{
+	char	*cmd_path;
+
+	cmd_path = get_cmd_path(cmd, envp);
+	if (!cmd_path)
+	{
+		printf("minishell: \n%s: command not found\n", cmd);
+		exit(127);
+	}
+	return cmd_path;
 }

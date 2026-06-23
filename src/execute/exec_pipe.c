@@ -1,66 +1,53 @@
 
-#include "minishell.h"
+#include <minishell.h>
 
-void execute_pipe(t_cmd *cmds, t_shell *shell)
+
+
+void	execute_pipe_child(int *fd, int *prev_fd, t_cmd *curr, t_shell *shell)
 {
-	int	fd[2];
-	int	wait_res;
-	int	prev_fd;
-	pid_t	pid;
-	int		status;
-	t_cmd	*curr;
 	char	*cmd_path;
 
-	prev_fd = -1;
-	curr = cmds;
-	while (curr)
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	if (*prev_fd != -1)
 	{
-		if (curr->next)
-			pipe(fd);
-		pid = fork();
-		if (pid == 0)
-		{
-			signal(SIGINT, SIG_DFL);
-			signal(SIGQUIT, SIG_DFL);
-			if (prev_fd != -1)
-			{
-				dup2(prev_fd, STDIN_FILENO);
-				close(prev_fd);
-			}
-			if (curr->next)
-			{
-				dup2(fd[1], STDOUT_FILENO);
-				close(fd[0]);
-				close(fd[1]);
-			}
-			if (setup_redirection(curr) != 0)
-				exit(1);
-			if (is_builtin(curr->argv[0]))
-				exit(exec_builtin(curr, shell, 1));
-			else
-			{
-				cmd_path = get_cmd_path(curr->argv[0], shell->envp);
-				if (!cmd_path)
-				{
-					printf("minishell: \n%s: command not found\n", cmds->argv[0]);
-					exit(127);
-				}
-				execve(cmd_path, curr->argv, shell->envp);
-				exit(126);
-			}
-		}
-		else
-		{
-			if (prev_fd != -1)
-				close(prev_fd);
-			if (curr->next)
-			{
-				close(fd[1]);
-				prev_fd = fd[0];
-			}
-		}
-		curr = curr->next;
+		dup2(*prev_fd, STDIN_FILENO);
+		close(*prev_fd);
 	}
+	if (curr->next)
+	{
+		dup2(fd[1], STDOUT_FILENO);
+		close(fd[0]);
+		close(fd[1]);
+	}
+	if (setup_redirection(curr) != 0)
+		exit(1);
+	if (is_builtin(curr->argv[0]))
+		exit(exec_builtin(curr, shell, 1));
+	cmd_path = call_cmd_path(curr->argv[0], shell->envp);
+	if (cmd_path)
+	{
+		execve(cmd_path, curr->argv, shell->envp);
+		exit(126);
+	}
+}
+
+void	execute_pipe_parent(int *prev_fd, t_cmd *curr, int *fd)
+{
+	if (*prev_fd != -1)
+		close(*prev_fd);
+	if (curr->next)
+	{
+		close(fd[1]);
+		*prev_fd = fd[0];
+	}
+}
+
+void	wait_result(pid_t pid, t_shell *shell)
+{
+	int		status;
+	pid_t	wait_res;
+
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	while ((wait_res = waitpid(-1, &status, 0)) > 0)
@@ -82,3 +69,25 @@ void execute_pipe(t_cmd *cmds, t_shell *shell)
 	init_signals();
 }
 
+void	execute_pipe(t_cmd *cmds, t_shell *shell)
+{
+	int	fd[2];
+	int	prev_fd;
+	pid_t	pid;
+	t_cmd	*curr;
+
+	prev_fd = -1;
+	curr = cmds;
+	while (curr)
+	{
+		if (curr->next)
+			pipe(fd);
+		pid = fork();
+		if (pid == 0)
+			execute_pipe_child(fd, &prev_fd, curr, shell);
+		else
+			execute_pipe_parent(&prev_fd, curr, fd);
+		curr = curr->next;
+	}
+	wait_result(pid, shell);
+}
