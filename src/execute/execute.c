@@ -19,7 +19,9 @@ void	handle_cmd_child(t_cmd *cmd, t_shell *shell)
 		cmd_path = get_cmd_path(cmd->argv[0], shell->envp);
 		if (!cmd_path)
 		{
-			printf("minishell: \n%s: command not found\n", cmd->argv[0]);
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(cmd->argv[0], 2);
+			ft_putstr_fd(": command not found\n", 2);
 			exit(127);
 		}
 		execve(cmd_path, cmd->argv, shell->envp);
@@ -38,7 +40,7 @@ void	handle_cmd_parent(t_shell *shell, pid_t pid)
 	waitpid(pid, &status, 0);
 	init_signals();
 	if (WIFEXITED(status))
-		shell->last_exit_status = WIFEXITED(status);
+		shell->last_exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
 	{
 		shell->last_exit_status = 128 + WTERMSIG(status);

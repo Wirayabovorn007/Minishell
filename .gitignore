@@ -1,2 +1,5 @@
 obj/
 minishell
+*.err
+*.log
+tester/

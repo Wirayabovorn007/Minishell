@@ -51,15 +51,3 @@ char *get_cmd_path(char *cmd, char **envp)
 	return (NULL);
 }
 
-char	*call_cmd_path(char *cmd, char **envp)
-{
-	char	*cmd_path;
-
-	cmd_path = get_cmd_path(cmd, envp);
-	if (!cmd_path)
-	{
-		printf("minishell: \n%s: command not found\n", cmd);
-		exit(127);
-	}
-	return cmd_path;
-}

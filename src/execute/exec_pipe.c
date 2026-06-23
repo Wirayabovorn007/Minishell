@@ -22,14 +22,22 @@ void	execute_pipe_child(int *fd, int *prev_fd, t_cmd *curr, t_shell *shell)
 	}
 	if (setup_redirection(curr) != 0)
 		exit(1);
+	if (!curr->argv || !curr->argv[0])
+		exit(0);
 	if (is_builtin(curr->argv[0]))
 		exit(exec_builtin(curr, shell, 1));
-	cmd_path = call_cmd_path(curr->argv[0], shell->envp);
-	if (cmd_path)
-	{
+	cmd_path = get_cmd_path(curr->argv[0], shell->envp);
+		if (!cmd_path)
+		{
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(curr->argv[0], 2);
+			ft_putstr_fd(": command not found\n", 2);
+			exit(127);
+		}
 		execve(cmd_path, curr->argv, shell->envp);
+		perror("minishell: execve");
+		free(cmd_path);
 		exit(126);
-	}
 }
 
 void	execute_pipe_parent(int *prev_fd, t_cmd *curr, int *fd)

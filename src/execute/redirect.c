@@ -19,6 +19,7 @@ int check_input(t_cmd *cmd, int *fd_in)
 	*fd_in = open(cmd->infile, O_RDONLY);
 	if (*fd_in < 0)
 	{
+		ft_putstr_fd("minishell: ", 2);
 		perror(cmd->infile);
 		return (1);
 	}
@@ -37,6 +38,7 @@ int check_output(t_cmd *cmd, int *fd_out)
 		*fd_out = open(cmd->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (*fd_out < 0)
 	{
+		ft_putstr_fd("minishell: ", 2);
 		perror(cmd->outfile);
 		return (1);
 	}
