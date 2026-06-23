@@ -25,9 +25,16 @@ static int	check_redirection(t_token *tok)
 {
 	if (is_redirection(tok->type))
 	{
-		if (!tok->next || tok->next->type != WORD)
+		if (!tok->next)
 		{
-			ft_putstr_fd("minishell: syntax error near unexpected token\n", 2);
+			ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
+			return (0);
+		}
+		if (tok->next->type != WORD)
+		{
+			ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+			ft_putstr_fd(tok->next->value, 2);
+			ft_putstr_fd("'\n", 2);
 			return (0);
 		}
 	}
@@ -45,6 +52,8 @@ int	syntax_check(t_token *tokens)
 	}
 	while (tokens)
 	{
+		if (!check_unsupported_meta_char(tokens))
+			return (0);
 		if (!check_pipe(tokens))
 			return (0);
 		if (!check_redirection(tokens))

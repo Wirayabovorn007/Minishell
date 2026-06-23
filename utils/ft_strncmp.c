@@ -21,3 +21,31 @@ void	ft_putstr_fd(char *str, int fd)
 		return ;
 	write(fd, str, ft_strlen(str));
 }
+
+int	check_unsupported_meta_char(t_token *tok)
+{
+	if (tok->type == WORD && tok->quote == NO_QUOTE)
+	{
+		if (ft_strchr(tok->value, '('))
+		{
+			ft_putstr_fd("minishell: syntax error near unexpected token `('\n", 2);
+			return (0);
+		}
+		if (ft_strchr(tok->value, ')'))
+		{
+			ft_putstr_fd("minishell: syntax error near unexpected token `)'\n", 2);
+			return (0);
+		}
+		if (ft_strchr(tok->value, ';'))
+		{
+			ft_putstr_fd("minishell: syntax error near unexpected token `;'\n", 2);
+			return (0);
+		}
+		if (ft_strchr(tok->value, '&'))
+		{
+			ft_putstr_fd("minishell: syntax error near unexpected token `&'\n", 2);
+			return (0);
+		}
+	}
+	return (1);
+}
