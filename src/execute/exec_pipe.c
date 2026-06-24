@@ -29,14 +29,21 @@ void	execute_pipe_child(int *fd, int *prev_fd, t_cmd *curr, t_shell *shell)
 	cmd_path = get_cmd_path(curr->argv[0], shell->envp);
 		if (!cmd_path)
 		{
+			ft_putstr_fd("minishell: ", 2);
 			ft_putstr_fd(curr->argv[0], 2);
 			ft_putstr_fd(": command not found\n", 2);
 			exit(127);
 		}
 		execve(cmd_path, curr->argv, shell->envp);
-		perror("minishell: execve");
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(curr->argv[0], 2);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(strerror(errno), 2);
+		ft_putstr_fd("\n", 2);
 		free(cmd_path);
-		exit(126);
+		if (errno == EACCES || errno == EISDIR || errno == ENOEXEC)
+			exit(126);
+		exit(127);
 }
 
 void	execute_pipe_parent(int *prev_fd, t_cmd *curr, int *fd)
@@ -67,9 +74,9 @@ void	wait_result(pid_t pid, t_shell *shell)
 			{
 				shell->last_exit_status = 128 + WTERMSIG(status);
 				if (WTERMSIG(status) == SIGQUIT)
-					write(1, "Quit (core dumped)\n", 19);
+					write(2, "Quit (core dumped)\n", 19);
 				else if (WTERMSIG(status) == SIGINT)
-					write(1, "\n", 1);
+					write(2, "\n", 1);
 			}
 		}
 	}

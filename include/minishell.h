@@ -142,6 +142,5 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		is_single_builtin(t_cmd *cmds);
 char	*ft_strchr(char *str, char c);
 void	ft_putstr_fd(char *str, int fd);
-int	check_unsupported_meta_char(t_token *tok);
 
 #endif

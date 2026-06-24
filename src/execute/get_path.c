@@ -15,12 +15,6 @@ static char *get_env_path(char **envp)
 	return NULL;
 }
 
-char	*direct_cmd_path(char *cmd)
-{
-	if (access(cmd, X_OK) == 0)
-		return (ft_strdup(cmd));
-	return (NULL);
-}
 
 char *get_cmd_path(char *cmd, char **envp)
 {
@@ -29,8 +23,10 @@ char *get_cmd_path(char *cmd, char **envp)
 	char	*part_path;
 	int		i;
 
+	if (!cmd || !cmd[0])
+		return (NULL);
 	if (ft_strchr(cmd, '/'))
-		return (direct_cmd_path(cmd));
+		return (ft_strdup(cmd));
 	if (!get_env_path(envp))
 		return (NULL);
 	paths = ft_split(get_env_path(envp), ':');

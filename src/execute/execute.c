@@ -19,14 +19,21 @@ void	handle_cmd_child(t_cmd *cmd, t_shell *shell)
 		cmd_path = get_cmd_path(cmd->argv[0], shell->envp);
 		if (!cmd_path)
 		{
+			ft_putstr_fd("minishell: ", 2);
 			ft_putstr_fd(cmd->argv[0], 2);
 			ft_putstr_fd(": command not found\n", 2);
 			exit(127);
 		}
 		execve(cmd_path, cmd->argv, shell->envp);
-		perror("minishell: execve");
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd->argv[0], 2);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(strerror(errno), 2);
+		ft_putstr_fd("\n", 2);
 		free(cmd_path);
-		exit(126);
+		if (errno == EACCES || errno == EISDIR || errno == ENOEXEC)
+			exit(126);
+		exit(127);
 	}
 }
 
@@ -44,9 +51,9 @@ void	handle_cmd_parent(t_shell *shell, pid_t pid)
 	{
 		shell->last_exit_status = 128 + WTERMSIG(status);
 		if (WTERMSIG(status) == SIGQUIT)
-			write(1, "Quit (core dumped)\n", 19);
+			write(2, "Quit (core dumped)\n", 19);
 		else if (WTERMSIG(status) == SIGINT)
-			write(1, "\n", 1);
+			write(2, "\n", 1);
 	}
 }
 

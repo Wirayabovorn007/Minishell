@@ -7,17 +7,17 @@ static int	is_numeric(char *str)
 	i = 0;
 	if (!str || !str[0])
 		return (0);
+	while (str[i] == ' ' || (str[i] >= '\t' && str[i] <= '\r'))
+		i++;
 	if (str[i] == '+' || str[i] == '-')
 		i++;
 	if (!str[i])
 		return (0);
-	while (str[i])
-	{
-		if (!is_digit(str[i]))
-			return (0);
+	while (str[i] && is_digit(str[i]))
 		i++;
-	}
-	return (1);
+	while (str[i] == ' ' || (str[i] >= '\t' && str[i] <= '\r'))
+		i++;
+	return (str[i] == '\0');
 }
 
 static int	check_overflow(char *str)
@@ -29,19 +29,26 @@ static int	check_overflow(char *str)
 	num = 0;
 	sign = 1;
 	i = 0;
+	while (str[i] == ' ' || (str[i] >= '\t' && str[i] <= '\r'))
+		i++;
 	if (str[i] == '+' || str[i] == '-')
 	{
 		if (str[i] == '-')
 			sign = -1;
 		i++;
 	}
-	while (str[i])
+	while (str[i] && is_digit(str[i]))
 	{
+		if (num > LLONG_MAX / 10)
+			return (1);
+		if (num == LLONG_MAX / 10)
+		{
+			if (sign == 1 && (str[i] - '0') > 7)
+				return (1);
+			if (sign == -1 && (str[i] - '0') > 8)
+				return (1);
+		}
 		num = num * 10 + (str[i] - '0');
-		if (sign == 1 && num > LLONG_MAX)
-			return (1);
-		if (sign == -1 && num > (unsigned long long)LLONG_MAX + 1)
-			return (1);
 		i++;
 	}
 	return (0);
@@ -56,6 +63,8 @@ static long long	ft_atoll_exit(char *str)
 	result = 0;
 	sign = 1;
 	i = 0;
+	while (str[i] == ' ' || (str[i] >= '\t' && str[i] <= '\r'))
+		i++;
 	if (str[i] == '+' || str[i] == '-')
 	{
 		if (str[i] == '-')
@@ -83,8 +92,8 @@ int	builtin_exit(char **argv, t_shell *shell, int is_single_cmd)
 		write(2, "minishell: exit: ", 17);
 		write(2, argv[1], ft_strlen(argv[1]));
 		write(2, ": numeric argument required\n", 28);
-		shell->last_exit_status = 255;
-		exit(255);
+		shell->last_exit_status = 2;
+		exit(2);
 	}
 	if (argv[2])
 	{
