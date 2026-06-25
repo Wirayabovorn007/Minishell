@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-extern int g_signal;
+extern int	g_signal;
 
 static void	process_input(char *line, t_shell *shell)
 {
@@ -71,7 +71,8 @@ int	main(int argc, char **argv, char **envp)
 // ตัวแปร cmds ที่โยนเข้า Execute
 // cmds->argv = อาร์เรย์ของคำสั่งและ flag (เช่น ["ls", "-l", NULL])
 
-// cmds->infile / cmds->outfile = ชื่อไฟล์ที่ต้องทำ Redirect (ถ้าไม่มีจะเป็น NULL)
+// cmds->infile / cmds->outfile = 
+// ชื่อไฟล์ที่ต้องทำ Redirect (ถ้าไม่มีจะเป็น NULL)
 
 // cmds->append = เป็น 1 ถ้าเจอ >>
 

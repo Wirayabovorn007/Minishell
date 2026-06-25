@@ -11,7 +11,8 @@ void	handle_heredoc_child(int *fd, char *delimiter)
 		line = readline("> ");
 		if (!line)
 		{
-			printf("minishell: warning: here-document delimited by end-of-file (wanted `%s')\n", delimiter);
+			printf("minishell: warning: here-document \
+				delimited by end-of-file (wanted `%s')\n", delimiter);
 			break ;
 		}
 		if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0
@@ -28,8 +29,7 @@ void	handle_heredoc_child(int *fd, char *delimiter)
 	exit(0);
 }
 
-
-int handle_heredoc(char *delimiter)
+int	handle_heredoc(char *delimiter)
 {
 	int		fd[2];
 	pid_t	pid;

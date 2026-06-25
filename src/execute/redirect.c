@@ -12,7 +12,7 @@ int	check_heredoc(t_cmd *cmd, int *fd_in)
 	return (0);
 }
 
-int check_input(t_cmd *cmd, int *fd_in)
+int	check_input(t_cmd *cmd, int *fd_in)
 {
 	if (!cmd->infile)
 		return (0);
@@ -31,7 +31,7 @@ int check_input(t_cmd *cmd, int *fd_in)
 	return (0);
 }
 
-int check_output(t_cmd *cmd, int *fd_out)
+int	check_output(t_cmd *cmd, int *fd_out)
 {
 	if (!cmd->outfile)
 		return (0);
@@ -76,9 +76,8 @@ int	setup_redirection(t_cmd *cmd)
 		ft_putstr_fd("\n", 2);
 		return (1);
 	}
-	if (check_input(cmd, &fd_in) != 0)
-		return (1);
-	if (check_output(cmd, &fd_out) != 0)
+	if ((check_input(cmd, &fd_in) != 0)
+		|| (check_output(cmd, &fd_out) != 0))
 		return (1);
 	return (0);
 }

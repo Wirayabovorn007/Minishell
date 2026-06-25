@@ -1,12 +1,8 @@
 
 #include <minishell.h>
 
-
-
-void	execute_pipe_child(int *fd, int *prev_fd, t_cmd *curr, t_shell *shell)
+static void	setup_child_process(int *fd, int *prev_fd, t_cmd *curr)
 {
-	char	*cmd_path;
-
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	if (*prev_fd != -1)
@@ -22,28 +18,31 @@ void	execute_pipe_child(int *fd, int *prev_fd, t_cmd *curr, t_shell *shell)
 	}
 	if (setup_redirection(curr) != 0)
 		exit(1);
+}
+
+void	execute_pipe_child(int *fd, int *prev_fd, t_cmd *curr, t_shell *shell)
+{
+	char	*cmd_path;
+
+	setup_child_process(fd, prev_fd, curr);
 	if (!curr->argv || !curr->argv[0])
 		exit(0);
 	if (is_builtin(curr->argv[0]))
 		exit(exec_builtin(curr, shell, 1));
 	cmd_path = get_cmd_path(curr->argv[0], shell->envp);
-		if (!cmd_path)
-		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(curr->argv[0], 2);
-			ft_putstr_fd(": command not found\n", 2);
-			exit(127);
-		}
-		execve(cmd_path, curr->argv, shell->envp);
+	if (!cmd_path)
+	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(curr->argv[0], 2);
-		ft_putstr_fd(": ", 2);
-		ft_putstr_fd(strerror(errno), 2);
-		ft_putstr_fd("\n", 2);
-		free(cmd_path);
-		if (errno == EACCES || errno == EISDIR || errno == ENOEXEC)
-			exit(126);
+		ft_putstr_fd(": command not found\n", 2);
 		exit(127);
+	}
+	execve(cmd_path, curr->argv, shell->envp);
+	print_err(curr);
+	free(cmd_path);
+	if (errno == EACCES || errno == EISDIR || errno == ENOEXEC)
+		exit(126);
+	exit(127);
 }
 
 void	execute_pipe_parent(int *prev_fd, t_cmd *curr, int *fd)
@@ -64,7 +63,8 @@ void	wait_result(pid_t pid, t_shell *shell)
 
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
-	while ((wait_res = waitpid(-1, &status, 0)) > 0)
+	wait_res = waitpid(-1, &status, 0);
+	while (wait_res > 0)
 	{
 		if (wait_res == pid)
 		{
@@ -79,14 +79,15 @@ void	wait_result(pid_t pid, t_shell *shell)
 					write(2, "\n", 1);
 			}
 		}
+		wait_res = waitpid(-1, &status, 0);
 	}
 	init_signals();
 }
 
 void	execute_pipe(t_cmd *cmds, t_shell *shell)
 {
-	int	fd[2];
-	int	prev_fd;
+	int		fd[2];
+	int		prev_fd;
 	pid_t	pid;
 	t_cmd	*curr;
 

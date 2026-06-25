@@ -9,20 +9,20 @@ int	is_single_builtin(t_cmd *cmds)
 	return (0);
 }
 
-char *ft_strchr(char *str, char c)
+char	*ft_strchr(char *str, char c)
 {
 	int	i;
 
 	i = 0;
 	if (!str)
-		return NULL;
+		return (NULL);
 	while (str[i])
 	{
 		if (str[i] == c)
 			return (str + i);
 		i++;
 	}
-	if (str[i] == c) 
-		return str + i;
-	return NULL;
+	if (str[i] == c)
+		return (str + i);
+	return (NULL);
 }
