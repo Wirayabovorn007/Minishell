@@ -14,12 +14,6 @@ static char	*get_env_path(char **envp)
 	return (NULL);
 }
 
-char	*helper(char **paths, char *path)
-{
-	free(paths);
-	return (path);
-}
-
 char	*get_cmd_path(char *cmd, char **envp)
 {
 	char	**paths;
@@ -41,7 +35,10 @@ char	*get_cmd_path(char *cmd, char **envp)
 		path = ft_strjoin(part_path, cmd);
 		free(part_path);
 		if (access(path, X_OK) == 0)
-			helper(paths, path);
+		{
+			free(paths);
+			return (path);
+		}
 		free(path);
 	}
 	free_arr(paths);
