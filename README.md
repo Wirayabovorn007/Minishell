@@ -35,7 +35,7 @@ This project is a custom implementation of a lightweight shell, mimicking the co
 **`Prerequisites`**: Requires a C compiler (GCC/Clang), Make, and the standard readline library.
 
 **`Compilation`**: Run the make command at the root of the repository to build the executable. Other standard rules include make clean, make fclean, and make re.
-Running the Shell: Start the program by executing `./minishell` in your terminal. You will be greeted by the custom prompt and can begin entering standard shell commands.
+Running the Shell: Start the program by executing `./minishell` in your terminal. You can begin entering standard shell commands.
 
 ## RESOURCES FOR FURTHER STUDY
 If you are interested in building your own shell or diving deeper into Unix system programming, here are some highly recommended resources:
