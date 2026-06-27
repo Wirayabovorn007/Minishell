@@ -22,7 +22,7 @@ void	ft_putstr_fd(char *str, int fd)
 	write(fd, str, ft_strlen(str));
 }
 
-static int	pre_check_redir(t_cmd *cmd, t_token *next_tok, char *clean_val)
+int	pre_check_redir(t_cmd *cmd, t_token *next_tok, char *clean_val)
 {
 	if (cmd->redir_error)
 	{
@@ -39,7 +39,7 @@ static int	pre_check_redir(t_cmd *cmd, t_token *next_tok, char *clean_val)
 	return (0);
 }
 
-static void	check_fd_error(t_cmd *cmd, int fd, char *val)
+void	check_fd_error(t_cmd *cmd, int fd, char *val)
 {
 	if (fd < 0)
 	{
@@ -51,7 +51,7 @@ static void	check_fd_error(t_cmd *cmd, int fd, char *val)
 		close(fd);
 }
 
-static void	apply_file_redir(t_cmd *cmd, char *val, int type)
+void	apply_file_redir(t_cmd *cmd, char *val, int type)
 {
 	int	fd;
 
