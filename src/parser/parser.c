@@ -38,35 +38,12 @@ void	handle_redir(t_cmd *cmd, t_token **tok, t_shell *shell)
 	expanded = expand_env(next->value, shell);
 	val = remove_quotes(expanded);
 	free(expanded);
-	if (next->quote == NO_QUOTE && ft_strchr(next->value, '$')
-		&& (val[0] == '\0' || ft_strchr(val, ' ')))
+	if (check_ambiguous(cmd, *tok, next, val))
 	{
-		cmd->ambiguous_redir = 1;
-		cmd->ambig_target = ft_strdup(next->value);
-		cmd->redir_error = 1;
-		free(val);
 		*tok = next;
 		return ;
 	}
-	if ((*tok)->type != HEREDOC && next->quote == NO_QUOTE
-		&& ft_strchr(next->value, '*'))
-	{
-		cmd->ambiguous_redir = 1;
-		cmd->ambig_target = val;
-		cmd->redir_error = 1;
-		*tok = next;
-		return ;
-	}
-	if ((*tok)->type == HEREDOC)
-	{
-		cmd->delimiter = remove_quotes(next->value);
-		free(val);
-		cmd->heredoc = 1;
-		if (next->quote != NO_QUOTE)
-			cmd->heredoc_quoted = 1;
-	}
-	else
-		apply_file_redir(cmd, val, (*tok)->type);
+	set_redir_target(cmd, *tok, next, val);
 	*tok = next;
 }
 
