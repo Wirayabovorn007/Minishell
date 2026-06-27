@@ -22,23 +22,6 @@ void	ft_putstr_fd(char *str, int fd)
 	write(fd, str, ft_strlen(str));
 }
 
-int	pre_check_redir(t_cmd *cmd, t_token *next_tok, char *clean_val)
-{
-	if (cmd->redir_error)
-	{
-		free(clean_val);
-		return (1);
-	}
-	if (next_tok->quote == NO_QUOTE && ft_strchr(next_tok->value, '*'))
-	{
-		cmd->ambiguous_redir = 1;
-		cmd->ambig_target = clean_val;
-		cmd->redir_error = 1;
-		return (1);
-	}
-	return (0);
-}
-
 void	check_fd_error(t_cmd *cmd, int fd, char *val)
 {
 	if (fd < 0)

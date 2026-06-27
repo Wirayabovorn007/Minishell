@@ -59,22 +59,17 @@ static void	unset_one(char *key, t_shell *shell)
 int	builtin_unset(char **argv, t_shell *shell)
 {
 	int	i;
-	int	status;
 
-	status = 0;
 	if (!argv[1])
 		return (0);
 	i = 1;
 	while (argv[i])
 	{
 		if (!is_valid_unset_id(argv[i]))
-		{
 			print_unset_error(argv[i]);
-			status = 1;
-		}
 		else
 			unset_one(argv[i], shell);
 		i++;
 	}
-	return (status);
+	return (0);
 }

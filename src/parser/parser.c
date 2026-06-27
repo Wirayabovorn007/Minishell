@@ -23,21 +23,44 @@ static void	add_arg(t_cmd *cmd, char *value)
 	cmd->argv = new_argv;
 }
 
-void	handle_redir(t_cmd *cmd, t_token **tok)
+void	handle_redir(t_cmd *cmd, t_token **tok, t_shell *shell)
 {
 	t_token	*next;
+	char	*expanded;
 	char	*val;
 
 	next = (*tok)->next;
-	val = remove_quotes(next->value);
-	if (pre_check_redir(cmd, next, val))
+	if (cmd->redir_error)
 	{
+		*tok = next;
+		return ;
+	}
+	expanded = expand_env(next->value, shell);
+	val = remove_quotes(expanded);
+	free(expanded);
+	if (next->quote == NO_QUOTE && ft_strchr(next->value, '$')
+		&& (val[0] == '\0' || ft_strchr(val, ' ')))
+	{
+		cmd->ambiguous_redir = 1;
+		cmd->ambig_target = ft_strdup(next->value);
+		cmd->redir_error = 1;
+		free(val);
+		*tok = next;
+		return ;
+	}
+	if ((*tok)->type != HEREDOC && next->quote == NO_QUOTE
+		&& ft_strchr(next->value, '*'))
+	{
+		cmd->ambiguous_redir = 1;
+		cmd->ambig_target = val;
+		cmd->redir_error = 1;
 		*tok = next;
 		return ;
 	}
 	if ((*tok)->type == HEREDOC)
 	{
-		cmd->delimiter = val;
+		cmd->delimiter = remove_quotes(next->value);
+		free(val);
 		cmd->heredoc = 1;
 		if (next->quote != NO_QUOTE)
 			cmd->heredoc_quoted = 1;

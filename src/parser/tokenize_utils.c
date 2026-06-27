@@ -45,5 +45,5 @@ void	process_token(t_cmd **cur, t_cmd **cmd, t_token **t, t_shell *sh)
 		add_cmd(cmd, *cur);
 	}
 	else
-		handle_redir(*cur, t);
+		handle_redir(*cur, t, sh);
 }

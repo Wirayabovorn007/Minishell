@@ -78,7 +78,7 @@ char	*get_env_value(char *str, t_shell *shell, int *i);
 char	*expand_env(char *str, t_shell *shell);
 int		env_len(char **env);
 void	split_and_add_args(t_cmd *cmd, char *str);
-void	handle_redir(t_cmd *cmd, t_token **tok);
+void	handle_redir(t_cmd *cmd, t_token **tok, t_shell *shell);
 t_cmd	*parse(t_token *tokens, t_shell *shell);
 t_cmd	*new_cmd(void);
 void	add_cmd(t_cmd **list, t_cmd *new);
@@ -143,7 +143,6 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		is_single_builtin(t_cmd *cmds);
 char	*ft_strchr(char *str, char c);
 void	ft_putstr_fd(char *str, int fd);
-int		pre_check_redir(t_cmd *cmd, t_token *next_tok, char *clean_val);
 void	check_fd_error(t_cmd *cmd, int fd, char *val);
 void	apply_file_redir(t_cmd *cmd, char *val, int type);
 
