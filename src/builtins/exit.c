@@ -20,36 +20,40 @@ static int	is_numeric(char *str)
 	return (str[i] == '\0');
 }
 
+static int	is_overflowing(unsigned long long num, int sign, char c)
+{
+	if (num > LLONG_MAX / 10)
+		return (1);
+	if (num == LLONG_MAX / 10)
+	{
+		if (sign == 1 && (c - '0') > 7)
+			return (1);
+		if (sign == -1 && (c - '0') > 8)
+			return (1);
+	}
+	return (0);
+}
+
 static int	check_overflow(char *str)
 {
 	unsigned long long	num;
 	int					sign;
-	int					i;
 
 	num = 0;
 	sign = 1;
-	i = 0;
-	while (str[i] == ' ' || (str[i] >= '\t' && str[i] <= '\r'))
-		i++;
-	if (str[i] == '+' || str[i] == '-')
+	while (*str == ' ' || (*str >= '\t' && *str <= '\r'))
+		str++;
+	if (*str == '+' || *str == '-')
 	{
-		if (str[i] == '-')
+		if (*str == '-')
 			sign = -1;
-		i++;
+		str++;
 	}
-	while (str[i] && is_digit(str[i]))
+	while (is_digit(*str))
 	{
-		if (num > LLONG_MAX / 10)
+		if (is_overflowing(num, sign, *str))
 			return (1);
-		if (num == LLONG_MAX / 10)
-		{
-			if (sign == 1 && (str[i] - '0') > 7)
-				return (1);
-			if (sign == -1 && (str[i] - '0') > 8)
-				return (1);
-		}
-		num = num * 10 + (str[i] - '0');
-		i++;
+		num = num * 10 + (*str++ - '0');
 	}
 	return (0);
 }

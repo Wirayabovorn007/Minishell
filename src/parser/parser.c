@@ -25,68 +25,26 @@ static void	add_arg(t_cmd *cmd, char *value)
 
 void	handle_redir(t_cmd *cmd, t_token **tok)
 {
-	t_token	*next_tok;
-	char	*clean_val;
-	int		fd;
+	t_token	*next;
+	char	*val;
 
-	next_tok = (*tok)->next;
-	clean_val = remove_quotes((*tok)->next->value);
-	if (cmd->redir_error)
+	next = (*tok)->next;
+	val = remove_quotes(next->value);
+	if (pre_check_redir(cmd, next, val))
 	{
-		free(clean_val);
-		*tok = next_tok;
+		*tok = next;
 		return ;
 	}
-	if (next_tok->quote == NO_QUOTE && ft_strchr(next_tok->value, '*'))
+	if ((*tok)->type == HEREDOC)
 	{
-		cmd->ambiguous_redir = 1;
-		cmd->ambig_target = clean_val;
-		cmd->redir_error = 1;
-		*tok = next_tok;
-		return ;
-	}
-	if ((*tok)->type == REDIR_OUT || (*tok)->type == APPEND)
-	{
-		if ((*tok)->type == APPEND)
-			fd = open(clean_val, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		else
-			fd = open(clean_val, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (fd < 0)
-		{
-			cmd->redir_error = 1;
-			cmd->redir_errno = errno;
-			cmd->redir_error_file = ft_strdup(clean_val);
-		}
-		else
-			close(fd);
-		if (cmd->outfile)
-			free(cmd->outfile);
-		cmd->outfile = clean_val;
-		cmd->append = ((*tok)->type == APPEND);
-	}
-	else if ((*tok)->type == REDIR_IN)
-	{
-		fd = open(clean_val, O_RDONLY);
-		if (fd < 0)
-		{
-			cmd->redir_error = 1;
-			cmd->redir_errno = errno;
-			cmd->redir_error_file = ft_strdup(clean_val);
-		}
-		else
-			close(fd);
-		if (cmd->infile)
-			free(cmd->infile);
-		cmd->infile = clean_val;
-	}
-	else if ((*tok)->type == HEREDOC)
-	{
-		cmd->delimiter = clean_val;
+		cmd->delimiter = val;
 		cmd->heredoc = 1;
-		if (next_tok->quote != NO_QUOTE)
+		if (next->quote != NO_QUOTE)
 			cmd->heredoc_quoted = 1;
 	}
-	*tok = next_tok;
+	else
+		apply_file_redir(cmd, val, (*tok)->type);
+	*tok = next;
 }
 
 static void	extract_and_add_arg(t_cmd *cmd, char *str, int start, int end)
