@@ -4,26 +4,32 @@
 This project is a custom implementation of a lightweight shell, mimicking the core functionalities of bash. Built from scratch in C, it focuses on deep system-level programming, including process creation , file descriptor management, parsing, and signal handling. The architecture was designed with a highly logical, modular approach to guarantee complete memory safety, and strictly adhere to the 42 Norminette standard.
 
 ## CORE FEATURES
-- **`Command Execution`**: Resolves and executes external commands via absolute paths, relative paths, or the system PATH environment variable.
+**`Command Execution`**: Resolves and executes external commands via absolute paths, relative paths, or the system PATH environment variable.
 
-- **`Parsing and Quotes`**: Robust handling of single and double quotes, ensuring literal interpretations where necessary and allowing for proper environment variable expansion.
+**`Parsing and Quotes`**: Robust handling of single and double quotes, ensuring literal interpretations where necessary and allowing for proper environment variable expansion.
 
-- **`Pipes`**: Chaining of commands, successfully managing multiple piped child processes without file descriptor or memory leaks.
+**`Pipes`**: Chaining of commands, successfully managing multiple piped child processes without file descriptor or memory leaks.
 
-- **`Redirections`**: Full support for standard input, standard output, append mode, and heredocs.
+**`Redirections`**: Full support for standard input, standard output, append mode, and heredocs.
 
-- **`Environment Variables`**: Expands system environment variables and properly handles exit status variables.
+**`Environment Variables`**: Expands system environment variables and properly handles exit status variables.
 
-- **`Signal Handling`**: Accurately replicates bash behavior for interrupt and quit signals across interactive mode, child processes, and heredocs.
+**`Signal Handling`**: Accurately replicates bash behavior for interrupt and quit signals across interactive mode, child processes, and heredocs.
 
 ## BUILTIN COMMANDS
-- `echo` with -n flag support
-- `cd` relative and absolute path support
-- `pwd` without options
-- `export` without options
-- `unset` without options
-- `env` without options or arguments
-- `exit` with numeric exit code support
+`echo` with -n flag support
+
+`cd` relative and absolute path support
+
+`pwd` without options
+
+`export` without options
+
+`unset` without options
+
+`env` without options or arguments
+
+`exit` with numeric exit code support
 
 ## INSTALLATION AND USAGE
 **`Prerequisites`**: Requires a C compiler (GCC/Clang), Make, and the standard readline library.
