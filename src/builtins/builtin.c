@@ -18,6 +18,8 @@ int	is_builtin(char *cmd)
 		return (1);
 	if (!ft_strcmp(cmd, "exit"))
 		return (1);
+	if (!ft_strcmp(cmd, ":"))
+		return (1);
 	return (0);
 }
 
@@ -39,5 +41,7 @@ int	exec_builtin(t_cmd *cmd, t_shell *shell, int is_single_cmd)
 		return (builtin_env(shell));
 	else if (ft_strcmp(cmd->argv[0], "exit") == 0)
 		return (builtin_exit(cmd->argv, shell, is_single_cmd));
+	else if (ft_strcmp(cmd->argv[0], ":") == 0)
+		return (0);
 	return (1);
 }
