@@ -33,6 +33,7 @@ utils/ft_itoa.c \
 utils/ft_split.c \
 utils/ft_strncmp.c \
 utils/string_utils.c \
+utils/free_utils2.c \
 utils/utils.c \
 utils/redir_helper.c \
 src/signal/signal.c \

@@ -27,6 +27,8 @@ void	set_redir_target(t_cmd *cmd, t_token *tok, t_token *next, char *val)
 {
 	if (tok->type == HEREDOC)
 	{
+		if (cmd->delimiter)
+			free(cmd->delimiter);
 		cmd->delimiter = remove_quotes(next->value);
 		free(val);
 		cmd->heredoc = 1;

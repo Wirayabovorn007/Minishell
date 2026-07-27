@@ -1,6 +1,6 @@
 #include <minishell.h>
 
-void	handle_heredoc_child(int *fd, char *delimiter)
+void	handle_heredoc_child(int *fd, char *delimiter, t_shell *shell)
 {
 	char	*line;
 
@@ -26,10 +26,10 @@ void	handle_heredoc_child(int *fd, char *delimiter)
 		free(line);
 	}
 	close(fd[1]);
-	exit(0);
+	free_and_exit(shell, 0);
 }
 
-int	handle_heredoc(char *delimiter)
+int		handle_heredoc(char *delimiter, t_shell *shell)
 {
 	int		fd[2];
 	pid_t	pid;
@@ -42,7 +42,7 @@ int	handle_heredoc(char *delimiter)
 	}
 	pid = fork();
 	if (pid == 0)
-		handle_heredoc_child(fd, delimiter);
+		handle_heredoc_child(fd, delimiter, shell);
 	close(fd[1]);
 	signal(SIGINT, SIG_IGN);
 	waitpid(pid, &status, 0);

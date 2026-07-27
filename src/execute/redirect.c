@@ -1,10 +1,10 @@
 #include <minishell.h>
 
-int	check_heredoc(t_cmd *cmd, int *fd_in)
+int		check_heredoc(t_cmd *cmd, int *fd_in, t_shell *shell)
 {
 	if (!cmd->delimiter)
 		return (0);
-	*fd_in = handle_heredoc(cmd->delimiter);
+	*fd_in = handle_heredoc(cmd->delimiter, shell);
 	if (*fd_in < 0)
 		return (1);
 	dup2(*fd_in, STDIN_FILENO);
@@ -53,7 +53,7 @@ int	check_output(t_cmd *cmd, int *fd_out)
 	return (0);
 }
 
-int	setup_redirection(t_cmd *cmd)
+int	setup_redirection(t_cmd *cmd, t_shell *shell)
 {
 	int	fd_in;
 	int	fd_out;
@@ -65,7 +65,7 @@ int	setup_redirection(t_cmd *cmd)
 		ft_putstr_fd(": ambiguous redirect\n", 2);
 		return (1);
 	}
-	if (check_heredoc(cmd, &fd_in) != 0)
+	if (check_heredoc(cmd, &fd_in, shell) != 0)
 		return (1);
 	if (cmd->redir_error)
 	{

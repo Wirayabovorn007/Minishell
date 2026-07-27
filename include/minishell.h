@@ -60,6 +60,7 @@ typedef struct s_shell
 {
 	char	**envp;
 	int		last_exit_status;
+	t_cmd	*active_cmds;
 }	t_shell;
 
 // parser
@@ -108,10 +109,10 @@ int		has_equal_sign(char *arg);
 
 // execute
 void	execute(t_cmd *cmds, t_shell *shell);
-int		setup_redirection(t_cmd *cmd);
-int		handle_heredoc(char *delimiter);
 char	*get_cmd_path(char *cmd, char **envp);
+int		handle_heredoc(char *delimiter, t_shell *shell);
 void	execute_pipe(t_cmd *cmds, t_shell *shell);
+int		setup_redirection(t_cmd *cmd, t_shell *shell);
 void	print_err(t_cmd *cmd);
 
 // signal
@@ -147,5 +148,6 @@ void	check_fd_error(t_cmd *cmd, int fd, char *val);
 void	apply_file_redir(t_cmd *cmd, char *val, int type);
 int		check_ambiguous(t_cmd *cmd, t_token *tok, t_token *next, char *val);
 void	set_redir_target(t_cmd *cmd, t_token *tok, t_token *next, char *val);
+void	free_and_exit(t_shell *shell, int status);
 
 #endif

@@ -1,7 +1,7 @@
 
 #include <minishell.h>
 
-static void	setup_child_process(int *fd, int *prev_fd, t_cmd *curr)
+static void	setup_child_process(int *fd, int *prev_fd, t_cmd *curr, t_shell *shell)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
@@ -16,33 +16,33 @@ static void	setup_child_process(int *fd, int *prev_fd, t_cmd *curr)
 		close(fd[0]);
 		close(fd[1]);
 	}
-	if (setup_redirection(curr) != 0)
-		exit(1);
+	if (setup_redirection(curr, shell) != 0)
+		free_and_exit(shell, 1);
 }
 
 void	execute_pipe_child(int *fd, int *prev_fd, t_cmd *curr, t_shell *shell)
 {
 	char	*cmd_path;
 
-	setup_child_process(fd, prev_fd, curr);
+	setup_child_process(fd, prev_fd, curr, shell);
 	if (!curr->argv || !curr->argv[0])
-		exit(0);
+		free_and_exit(shell, 0);
 	if (is_builtin(curr->argv[0]))
-		exit(exec_builtin(curr, shell, 1));
+		free_and_exit(shell, exec_builtin(curr, shell, 1));
 	cmd_path = get_cmd_path(curr->argv[0], shell->envp);
 	if (!cmd_path)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(curr->argv[0], 2);
 		ft_putstr_fd(": command not found\n", 2);
-		exit(127);
+		free_and_exit(shell, 127);
 	}
 	execve(cmd_path, curr->argv, shell->envp);
 	print_err(curr);
 	free(cmd_path);
 	if (errno == EACCES || errno == EISDIR || errno == ENOEXEC)
-		exit(126);
-	exit(127);
+		free_and_exit(shell, 126);
+	free_and_exit(shell, 127);
 }
 
 void	execute_pipe_parent(int *prev_fd, t_cmd *curr, int *fd)

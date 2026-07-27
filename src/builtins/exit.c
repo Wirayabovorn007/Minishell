@@ -90,22 +90,23 @@ int	builtin_exit(char **argv, t_shell *shell, int is_single_cmd)
 	if (is_single_cmd)
 		write(2, "exit\n", 5);
 	if (!argv[1])
-		exit(shell->last_exit_status);
+		free_and_exit(shell, shell->last_exit_status);
 	if (!is_numeric(argv[1]) || check_overflow(argv[1]))
 	{
 		write(2, "minishell: exit: ", 17);
 		write(2, argv[1], ft_strlen(argv[1]));
 		write(2, ": numeric argument required\n", 28);
-		shell->last_exit_status = 2;
+		free_and_exit(shell, 2);
 		exit(2);
 	}
 	if (argv[2])
 	{
 		write(2, "minishell: exit: too many arguments\n", 36);
-		shell->last_exit_status = 1;
+		free_and_exit(shell, 1);
 		return (1);
 	}
 	exit_code = ft_atoll_exit(argv[1]);
 	shell->last_exit_status = (unsigned char)exit_code;
-	exit((unsigned char)exit_code);
+	free_and_exit(shell, (unsigned char)exit_code);
+	return (0);
 }

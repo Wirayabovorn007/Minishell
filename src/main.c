@@ -23,9 +23,11 @@ static void	process_input(char *line, t_shell *shell)
 		return ;
 	}
 	cmds = parse(tokens, shell);
+	shell->active_cmds = cmds;
 	free_tokens(tokens);
 	execute(cmds, shell);
 	free_cmds(cmds);
+	shell->active_cmds = NULL;
 }
 
 static void	shell_loop(t_shell *shell)
@@ -56,6 +58,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	shell.last_exit_status = 0;
+	shell.active_cmds = NULL;
 	if (init_env(&shell, envp) != 0)
 	{
 		write(2, "minishell: Error initializing environment\n", 42);
@@ -67,15 +70,3 @@ int	main(int argc, char **argv, char **envp)
 	rl_clear_history();
 	return (shell.last_exit_status);
 }
-
-// ตัวแปร cmds ที่โยนเข้า Execute
-// cmds->argv = อาร์เรย์ของคำสั่งและ flag (เช่น ["ls", "-l", NULL])
-
-// cmds->infile / cmds->outfile = 
-// ชื่อไฟล์ที่ต้องทำ Redirect (ถ้าไม่มีจะเป็น NULL)
-
-// cmds->append = เป็น 1 ถ้าเจอ >>
-
-// cmds->heredoc = เป็น 1 ถ้าเจอ << (พร้อม delimiter)
-
-// cmds->next = ชี้ไปที่คำสั่งถัดไปถ้ามีการทำ Pipe |

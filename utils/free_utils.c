@@ -39,6 +39,8 @@ void	free_cmds(t_cmd *cmds)
 		free(cmds->infile);
 		free(cmds->outfile);
 		free(cmds->delimiter);
+		free(cmds->ambig_target);
+		free(cmds->redir_error_file);
 		free(cmds);
 		cmds = tmp;
 	}
