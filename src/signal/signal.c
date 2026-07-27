@@ -12,6 +12,13 @@ void	sigint_handler(int sig)
 	rl_redisplay();
 }
 
+void	heredoc_sigint_handler(int sig)
+{
+	g_signal = sig;
+	write(1, "\n", 1);
+	close(STDIN_FILENO);
+}
+
 void	init_signals(void)
 {
 	struct sigaction	sa_int;

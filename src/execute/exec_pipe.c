@@ -3,8 +3,6 @@
 
 static void	setup_child_process(int *fd, int *prev_fd, t_cmd *curr, t_shell *shell)
 {
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
 	if (*prev_fd != -1)
 	{
 		dup2(*prev_fd, STDIN_FILENO);
@@ -18,6 +16,8 @@ static void	setup_child_process(int *fd, int *prev_fd, t_cmd *curr, t_shell *she
 	}
 	if (setup_redirection(curr, shell) != 0)
 		free_and_exit(shell, 1);
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 }
 
 void	execute_pipe_child(int *fd, int *prev_fd, t_cmd *curr, t_shell *shell)

@@ -117,6 +117,7 @@ void	print_err(t_cmd *cmd);
 
 // signal
 void	init_signals(void);
+void	heredoc_sigint_handler(int sig);
 
 // utils
 void	free_split(char **arr);

@@ -1,22 +1,25 @@
 #include <minishell.h>
 
-void	handle_heredoc_child(int *fd, char *delimiter, t_shell *shell)
+void handle_heredoc_child(int *fd, char *delimiter, t_shell *shell)
 {
-	char	*line;
+	char *line;
 
 	close(fd[0]);
-	signal(SIGINT, SIG_DFL);
+	signal(SIGINT, heredoc_sigint_handler);
 	while (1)
 	{
 		line = readline("> ");
 		if (!line)
 		{
-			printf("minishell: warning: here-document \
-				delimited by end-of-file (wanted `%s')\n", delimiter);
+			if (g_signal == SIGINT)
+			{
+				close(fd[1]);
+				free_and_exit(shell, 130);
+			}
+			printf("minishell: warning: here-document delimited by end-of-file (wanted `%s')\n", delimiter);
 			break ;
 		}
-		if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0
-			&& ft_strlen(line) == ft_strlen(delimiter))
+		if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0 && ft_strlen(line) == ft_strlen(delimiter))
 		{
 			free(line);
 			break ;

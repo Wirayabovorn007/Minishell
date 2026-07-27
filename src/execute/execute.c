@@ -14,10 +14,10 @@ void	handle_cmd_child(t_cmd *cmd, t_shell *shell)
 {
 	char	*cmd_path;
 
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
 	if (setup_redirection(cmd, shell) != 0)
 		free_and_exit(shell, 1);
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	if (!cmd->argv || !cmd->argv[0])
 		free_and_exit(shell, 0);
 	if (is_builtin(cmd->argv[0]))
