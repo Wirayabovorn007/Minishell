@@ -1,7 +1,7 @@
-
 #include <minishell.h>
 
-static void	setup_child_process(int *fd, int *prev_fd, t_cmd *curr, t_shell *shell)
+static void	setup_child_process(int *fd,
+	int *prev_fd, t_cmd *curr, t_shell *shell)
 {
 	if (*prev_fd != -1)
 	{

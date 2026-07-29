@@ -1,4 +1,3 @@
-
 #include "minishell.h"
 
 int	check_ambiguous(t_cmd *cmd, t_token *tok, t_token *next, char *val)

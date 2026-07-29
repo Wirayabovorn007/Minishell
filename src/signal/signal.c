@@ -1,4 +1,3 @@
-
 #include "minishell.h"
 
 int	g_signal = 0;

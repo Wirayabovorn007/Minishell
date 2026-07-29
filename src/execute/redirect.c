@@ -1,6 +1,6 @@
 #include <minishell.h>
 
-int		check_heredoc(t_cmd *cmd, int *fd_in, t_shell *shell)
+int	check_heredoc(t_cmd *cmd, int *fd_in, t_shell *shell)
 {
 	if (!cmd->delimiter)
 		return (0);

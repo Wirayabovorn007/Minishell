@@ -1,4 +1,3 @@
-
 #include "minishell.h"
 
 void	free_and_exit(t_shell *shell, int status)
