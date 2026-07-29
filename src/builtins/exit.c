@@ -39,8 +39,9 @@ static int	check_overflow(char *str)
 	limit = 9223372036854775807ULL + (sign == -1);
 	while (is_digit(*str))
 	{
-		if (num > limit / 10 || (num == limit / 10
-			&& (unsigned long long)(*str - '0') > limit % 10))
+		if (num > limit / 10
+			|| (num == limit / 10
+				&& (unsigned long long)(*str - '0') > limit % 10))
 			return (1);
 		num = num * 10 + (*str++ - '0');
 	}
