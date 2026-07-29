@@ -61,6 +61,8 @@ typedef struct s_shell
 	char	**envp;
 	int		last_exit_status;
 	t_cmd	*active_cmds;
+	int		saved_stdin;
+	int		saved_stdout;
 }	t_shell;
 
 // parser

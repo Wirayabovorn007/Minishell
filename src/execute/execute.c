@@ -73,23 +73,22 @@ void	execute_single_cmd(t_cmd *cmd, t_shell *shell)
 
 void	execute(t_cmd *cmds, t_shell *shell)
 {
-	int	saved_stdin;
-	int	saved_stdout;
-
 	if (!cmds)
 		return ;
 	if (is_single_builtin(cmds))
 	{
-		saved_stdin = dup(STDIN_FILENO);
-		saved_stdout = dup(STDOUT_FILENO);
+		shell->saved_stdin = dup(STDIN_FILENO);
+		shell->saved_stdout = dup(STDOUT_FILENO);
 		if (setup_redirection(cmds, shell) == 0)
 			shell->last_exit_status = exec_builtin(cmds, shell, 1);
 		else
 			shell->last_exit_status = 1;
-		dup2(saved_stdin, STDIN_FILENO);
-		dup2(saved_stdout, STDOUT_FILENO);
-		close(saved_stdin);
-		close(saved_stdout);
+		dup2(shell->saved_stdin, STDIN_FILENO);
+		dup2(shell->saved_stdout, STDOUT_FILENO);
+		close(shell->saved_stdin);
+		close(shell->saved_stdout);
+		shell->saved_stdin = -1;
+		shell->saved_stdout = -1;
 	}
 	else if (!cmds->next)
 		execute_single_cmd(cmds, shell);
