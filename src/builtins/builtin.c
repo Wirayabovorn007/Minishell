@@ -32,7 +32,7 @@ int	exec_builtin(t_cmd *cmd, t_shell *shell, int is_single_cmd)
 	else if (ft_strcmp(cmd->argv[0], "cd") == 0)
 		return (builtin_cd(cmd->argv, shell));
 	else if (ft_strcmp(cmd->argv[0], "pwd") == 0)
-		return (builtin_pwd());
+		return (builtin_pwd(shell));
 	else if (ft_strcmp(cmd->argv[0], "export") == 0)
 		return (builtin_export(cmd->argv, &shell->envp));
 	else if (ft_strcmp(cmd->argv[0], "unset") == 0)

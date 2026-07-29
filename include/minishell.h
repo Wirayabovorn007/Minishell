@@ -90,7 +90,7 @@ void	free_envp(char **envp);
 int		is_builtin(char *cmd);
 int		exec_builtin(t_cmd *cmd, t_shell *shell, int is_single_cmd);
 int		builtin_echo(char **argv);
-int		builtin_pwd(void);
+int		builtin_pwd(t_shell *shell);
 int		builtin_env(t_shell *shell);
 int		builtin_cd(char **argv, t_shell *shell);
 int		builtin_exit(char **argv, t_shell *shell, int is_single_cmd);
