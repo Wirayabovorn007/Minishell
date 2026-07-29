@@ -3,19 +3,20 @@
 int	builtin_pwd(t_shell *shell)
 {
 	char	cwd[4096];
-	char	*logical_pwd;
+	char	*prev_pwd;
 
-	logical_pwd = get_env_val(shell->envp, "PWD");
-	if (logical_pwd != NULL)
+	if (getcwd(cwd, sizeof(cwd)) != NULL)
 	{
-		printf("%s\n", logical_pwd);
+		printf("%s\n", cwd);
 		return (0);
 	}
-	if (getcwd(cwd, sizeof(cwd)) == NULL)
+	prev_pwd = get_env_val(shell->envp, "PWD");
+	if (prev_pwd != NULL)
 	{
-		perror("pwd");
-		return (1);
+		fprintf(stderr,
+			"pwd: error retrieving current directory: "
+			"getcwd: cannot access parent directories: "
+			"No such file or directory\n");
 	}
-	printf("%s\n", cwd);
-	return (0);
+	return (1);
 }
