@@ -87,6 +87,7 @@ t_cmd	*new_cmd(void);
 void	add_cmd(t_cmd **list, t_cmd *new);
 void	free_cmds(t_cmd *cmds);
 void	free_envp(char **envp);
+void	test_file_access(t_cmd *cmd, t_token *tok, char *val);
 
 // builtin
 int		is_builtin(char *cmd);
@@ -115,7 +116,8 @@ char	*get_cmd_path(char *cmd, char **envp);
 int		handle_heredoc(char *delimiter, t_shell *shell);
 void	execute_pipe(t_cmd *cmds, t_shell *shell);
 int		setup_redirection(t_cmd *cmd, t_shell *shell);
-void	print_err(t_cmd *cmd);
+void	print_err(t_cmd *cmd, int err);
+void	handle_exec_error(t_cmd *cmd, t_shell *shell, char *cmd_path, int err);
 
 // signal
 void	init_signals(void);

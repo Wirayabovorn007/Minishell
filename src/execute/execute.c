@@ -1,11 +1,11 @@
 #include <minishell.h>
 
-void	print_err(t_cmd *cmd)
+void	print_err(t_cmd *cmd, int err)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(cmd->argv[0], 2);
 	ft_putstr_fd(": ", 2);
-	ft_putstr_fd(strerror(errno), 2);
+	ft_putstr_fd(strerror(err), 2);
 	ft_putstr_fd("\n", 2);
 }
 
@@ -30,11 +30,7 @@ void	handle_cmd_child(t_cmd *cmd, t_shell *shell)
 		free_and_exit(shell, 127);
 	}
 	execve(cmd_path, cmd->argv, shell->envp);
-	print_err(cmd);
-	free(cmd_path);
-	if (errno == EACCES || errno == EISDIR || errno == ENOEXEC)
-		free_and_exit(shell, 126);
-	free_and_exit(shell, 127);
+	handle_exec_error(cmd, shell, cmd_path, errno);
 }
 
 void	handle_cmd_parent(t_shell *shell, pid_t pid)

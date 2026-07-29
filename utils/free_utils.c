@@ -10,6 +10,7 @@ void	free_split(char **arr)
 	while (arr[i])
 	{
 		free(arr[i]);
+		arr[i] = NULL;
 		i++;
 	}
 	free(arr);
@@ -22,7 +23,11 @@ void	free_tokens(t_token *tokens)
 	while (tokens)
 	{
 		tmp = tokens->next;
-		free(tokens->value);
+		if (tokens->value)
+		{
+			free(tokens->value);
+			tokens->value = NULL;
+		}
 		free(tokens);
 		tokens = tmp;
 	}

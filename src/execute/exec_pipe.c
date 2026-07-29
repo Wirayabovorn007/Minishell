@@ -38,11 +38,7 @@ void	execute_pipe_child(int *fd, int *prev_fd, t_cmd *curr, t_shell *shell)
 		free_and_exit(shell, 127);
 	}
 	execve(cmd_path, curr->argv, shell->envp);
-	print_err(curr);
-	free(cmd_path);
-	if (errno == EACCES || errno == EISDIR || errno == ENOEXEC)
-		free_and_exit(shell, 126);
-	free_and_exit(shell, 127);
+	handle_exec_error(curr, shell, cmd_path, errno);
 }
 
 void	execute_pipe_parent(int *prev_fd, t_cmd *curr, int *fd)

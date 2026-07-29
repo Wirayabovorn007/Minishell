@@ -26,3 +26,12 @@ char	*ft_strchr(char *str, char c)
 		return (str + i);
 	return (NULL);
 }
+
+void	handle_exec_error(t_cmd *cmd, t_shell *shell, char *cmd_path, int err)
+{
+	print_err(cmd, err);
+	free(cmd_path);
+	if (err == EACCES || err == EISDIR || err == ENOEXEC)
+		free_and_exit(shell, 126);
+	free_and_exit(shell, 127);
+}

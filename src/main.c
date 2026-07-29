@@ -20,6 +20,7 @@ static void	process_input(char *line, t_shell *shell)
 	{
 		shell->last_exit_status = 2;
 		free_tokens(tokens);
+		tokens = NULL;
 		return ;
 	}
 	cmds = parse(tokens, shell);

@@ -66,13 +66,19 @@ static int	handle_export_arg(char *arg, char ***env)
 
 int	builtin_export(char **argv, char ***env)
 {
-	int	i;
-	int	status;
+	int		i;
+	int		status;
+	char	**env_copy;
 
 	status = 0;
 	if (!argv[1])
 	{
-		print_export(*env);
+		env_copy = copy_env(*env);
+		if (!env_copy)
+			return (1);
+		sort_env(env_copy);
+		print_export(env_copy);
+		free_envp(env_copy);
 		return (0);
 	}
 	i = 1;

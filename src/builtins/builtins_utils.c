@@ -35,6 +35,26 @@ int	find_env(char **env, char *key)
 	return (-1);
 }
 
+static int	env_key_strcmp(char *s1, char *s2)
+{
+	int				i;
+	unsigned char	c1;
+	unsigned char	c2;
+
+	i = 0;
+	while (s1[i] && s2[i] && s1[i] != '=' && s2[i] != '=' && s1[i] == s2[i])
+		i++;
+	if (s1[i] == '=')
+		c1 = '\0';
+	else
+		c1 = (unsigned char)s1[i];
+	if (s2[i] == '=')
+		c2 = '\0';
+	else
+		c2 = (unsigned char)s2[i];
+	return (c1 - c2);
+}
+
 void	sort_env(char **env)
 {
 	int	i;
@@ -46,7 +66,7 @@ void	sort_env(char **env)
 		j = i + 1;
 		while (env[j])
 		{
-			if (ft_strcmp(env[i], env[j]) > 0)
+			if (env_key_strcmp(env[i], env[j]) > 0)
 				swap(&env[i], &env[j]);
 			j++;
 		}
