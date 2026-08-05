@@ -13,10 +13,12 @@ int	builtin_pwd(t_shell *shell)
 	prev_pwd = get_env_val(shell->envp, "PWD");
 	if (prev_pwd != NULL)
 	{
-		fprintf(stderr,
-			"pwd: error retrieving current directory: "
-			"getcwd: cannot access parent directories: "
-			"No such file or directory\n");
+		printf("%s\n", prev_pwd);
+		return (0);
 	}
+	fprintf(stderr,
+		"pwd: error retrieving current directory: "
+		"getcwd: cannot access parent directories: "
+		"No such file or directory\n");
 	return (1);
 }
