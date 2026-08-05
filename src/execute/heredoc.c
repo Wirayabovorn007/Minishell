@@ -5,7 +5,7 @@ static void	handle_eof_or_sig(int *fd, char *delim, t_shell *shell)
 	if (g_signal == SIGINT)
 	{
 		close(fd[1]);
-		free_and_exit(shell, 130);
+		free_and_exit(shell, 128 + SIGINT);
 	}
 	printf("minishell: warning: here-document delimited "
 		"by end-of-file (wanted `%s')\n", delim);
@@ -54,8 +54,9 @@ int	handle_heredoc(char *delimiter, t_shell *shell)
 	signal(SIGINT, SIG_IGN);
 	waitpid(pid, &status, 0);
 	init_signals();
-	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+	if (WIFEXITED(status) && WEXITSTATUS(status) == (128 + SIGINT))
 	{
+		shell->last_exit_status = (128 + SIGINT);
 		write(1, "\n", 1);
 		close(fd[0]);
 		return (-1);
