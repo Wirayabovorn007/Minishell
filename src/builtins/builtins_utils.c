@@ -73,3 +73,25 @@ void	sort_env(char **env)
 		i++;
 	}
 }
+
+char	*get_cd_path(char **argv, t_shell *shell)
+{
+	char	*p;
+
+	if (!argv[1])
+	{
+		p = get_env_val(shell->envp, "HOME");
+		if (!p)
+			write(2, "minishell: cd: HOME not set\n", 28);
+		return (p);
+	}
+	p = get_env_val(shell->envp, "OLDPWD");
+	if (!p)
+		write(2, "minishell: cd: OLDPWD not set\n", 30);
+	else
+	{
+		ft_putstr_fd(p, 1);
+		ft_putstr_fd("\n", 1);
+	}
+	return (p);
+}

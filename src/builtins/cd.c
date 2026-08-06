@@ -68,17 +68,22 @@ int	add_or_update_env(t_shell *shell, char *key, char *value)
 
 static int	update_dir_and_env(t_shell *shell, char *path)
 {
-	char	cwd[4096];
+	char	old_cwd[4096];
+	char	new_cwd[4096];
+	int		has_old;
 
-	if (getcwd(cwd, sizeof(cwd)))
-		add_or_update_env(shell, "OLDPWD", cwd);
+	has_old = 0;
+	if (getcwd(old_cwd, sizeof(old_cwd)))
+		has_old = 1;
 	if (chdir(path) != 0)
 	{
 		perror("cd");
 		return (1);
 	}
-	if (getcwd(cwd, sizeof(cwd)))
-		add_or_update_env(shell, "PWD", cwd);
+	if (has_old)
+		add_or_update_env(shell, "OLDPWD", old_cwd);
+	if (getcwd(new_cwd, sizeof(new_cwd)))
+		add_or_update_env(shell, "PWD", new_cwd);
 	return (0);
 }
 
@@ -91,14 +96,11 @@ int	builtin_cd(char **argv, t_shell *shell)
 		write(2, "minishell: cd: too many arguments\n", 34);
 		return (1);
 	}
-	if (!argv[1])
+	if (!argv[1] || ft_strcmp(argv[1], "-") == 0)
 	{
-		path = get_env_val(shell->envp, "HOME");
+		path = get_cd_path(argv, shell);
 		if (!path)
-		{
-			write (2, "minishell: cd: HOME not set\n", 28);
 			return (1);
-		}
 	}
 	else if (argv[1][0] == '\0')
 	{

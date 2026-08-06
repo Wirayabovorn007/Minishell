@@ -16,7 +16,7 @@ void	handle_cmd_child(t_cmd *cmd, t_shell *shell)
 	if (setup_redirection(cmd, shell) != 0)
 	{
 		if (shell->last_exit_status > 128)
-    		free_and_exit(shell, shell->last_exit_status);
+			free_and_exit(shell, shell->last_exit_status);
 		free_and_exit(shell, 1);
 	}
 	signal(SIGINT, SIG_DFL);

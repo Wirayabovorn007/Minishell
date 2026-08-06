@@ -17,7 +17,7 @@ static void	setup_child_process(int *fd,
 	if (setup_redirection(curr, shell) != 0)
 	{
 		if (shell->last_exit_status > 128)
-    		free_and_exit(shell, shell->last_exit_status);
+			free_and_exit(shell, shell->last_exit_status);
 		free_and_exit(shell, 1);
 	}
 	signal(SIGINT, SIG_DFL);

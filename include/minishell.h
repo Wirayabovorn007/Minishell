@@ -109,6 +109,7 @@ void	sort_env(char **env);
 char	**copy_env(char **env);
 void	print_export_error(char *arg);
 int		has_equal_sign(char *arg);
+char	*get_cd_path(char **argv, t_shell *shell);
 
 // execute
 void	execute(t_cmd *cmds, t_shell *shell);
