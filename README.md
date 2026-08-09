@@ -1,20 +1,28 @@
-# Minishell
-**As beautiful as a shell**
+This project has been created as part of the 42 curriculum by wiboonpr, pphuntph.
 
+# Minishell - **As beautiful as a shell**
+## Description
 This project is a custom implementation of a lightweight shell, mimicking the core functionalities of bash. Built from scratch in C, it focuses on deep system-level programming, including process creation , file descriptor management, parsing, and signal handling. The architecture was designed with a highly logical, modular approach to guarantee complete memory safety, and strictly adhere to the 42 Norminette standard.
 
-## CORE FEATURES
-**`Command Execution`**: Resolves and executes external commands via absolute paths, relative paths, or the system PATH environment variable.
+- **`Command Execution`**: Resolves and executes external commands via absolute paths, relative paths, or the system PATH environment variable.
 
-**`Parsing and Quotes`**: Robust handling of single and double quotes, ensuring literal interpretations where necessary and allowing for proper environment variable expansion.
+- **`Parsing and Quotes`**: Robust handling of single and double quotes, ensuring literal interpretations where necessary and allowing for proper environment variable expansion.
 
-**`Pipes`**: Chaining of commands, successfully managing multiple piped child processes without file descriptor or memory leaks.
+- **`Pipes`**: Chaining of commands, successfully managing multiple piped child processes without file descriptor or memory leaks.
 
-**`Redirections`**: Full support for standard input, standard output, append mode, and heredocs.
+- **`Redirections`**: Full support for standard input, standard output, append mode, and heredocs.
 
-**`Environment Variables`**: Expands system environment variables and properly handles exit status variables.
+- **`Environment Variables`**: Expands system environment variables and properly handles exit status variables.
 
-**`Signal Handling`**: Accurately replicates bash behavior for interrupt and quit signals across interactive mode, child processes, and heredocs.
+- **`Signal Handling`**: Accurately replicates bash behavior for interrupt and quit signals across interactive mode, child processes, and heredocs.
+
+## Instructions
+**`Prerequisites`**: Requires a C compiler (GCC/Clang), Make, and the standard readline library.
+
+**`Compilation`**: Run the make command at the root of the repository to build the executable. Other standard rules include `make clean`, `make fclean`, and `make re`.
+
+**`Running the Shell`**: Start the program by executing `./minishell` in your terminal. You can begin entering standard shell commands.
+
 
 ## BUILTIN COMMANDS
 `echo` with -n flag support
@@ -31,13 +39,8 @@ This project is a custom implementation of a lightweight shell, mimicking the co
 
 `exit` with numeric exit code support
 
-## INSTALLATION AND USAGE
-**`Prerequisites`**: Requires a C compiler (GCC/Clang), Make, and the standard readline library.
 
-**`Compilation`**: Run the make command at the root of the repository to build the executable. Other standard rules include make clean, make fclean, and make re.
-Running the Shell: Start the program by executing `./minishell` in your terminal. You can begin entering standard shell commands.
-
-## RESOURCES FOR FURTHER STUDY
+## RESOURCES
 If you are interested in building your own shell or diving deeper into Unix system programming, here are some highly recommended resources:
 
 - [The Essential Linux Man Pages](https://man7.org/linux/man-pages/)
@@ -45,10 +48,10 @@ If you are interested in building your own shell or diving deeper into Unix syst
 - [
 Communicating between processes (using pipes) in C](https://www.youtube.com/watch?v=Mqb2dVRe0uo&t=435s)
 
+## AI Usage:
+AI was used in this project to assist with debugging edge cases, explaining concepts, writing documentation.
+
 ## AUTHORS
 [wiboonpr (New)](https://github.com/Wirayabovorn007)
 
 [pphuntph (Modtanoy)](https://github.com/Modey-Codey)
-
-## ACKNOWLEDGMENTS
-Developed as part of the core software engineering curriculum at 42 Bangkok.
