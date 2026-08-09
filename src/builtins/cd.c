@@ -87,27 +87,28 @@ static int	update_dir_and_env(t_shell *shell, char *path)
 	return (0);
 }
 
-int	builtin_cd(char **argv, t_shell *shell)
+int builtin_cd(char **argv, t_shell *shell)
 {
 	char	*path;
+	int		ret;
+	int		is_allocated;
 
+	is_allocated = 0;
 	if (argv[1] && argv[2])
 	{
 		write(2, "minishell: cd: too many arguments\n", 34);
 		return (1);
 	}
-	if (!argv[1] || ft_strcmp(argv[1], "-") == 0)
+	if (!argv[1])
 	{
-		path = get_cd_path(argv, shell);
+		path = get_env_val(shell->envp, "HOME");
 		if (!path)
 			return (1);
 	}
-	else if (argv[1][0] == '\0')
-	{
-		write(2, "minishell: cd: : No such file or directory\n", 43);
+	else if (special_cd(argv, shell, &path, &is_allocated) != 0)
 		return (1);
-	}
-	else
-		path = argv[1];
-	return (update_dir_and_env(shell, path));
+	ret = update_dir_and_env(shell, path);
+	if (is_allocated)
+		free(path);
+	return (ret);
 }

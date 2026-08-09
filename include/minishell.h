@@ -155,5 +155,6 @@ void	apply_file_redir(t_cmd *cmd, char *val, int type);
 int		check_ambiguous(t_cmd *cmd, t_token *tok, t_token *next, char *val);
 void	set_redir_target(t_cmd *cmd, t_token *tok, t_token *next, char *val);
 void	free_and_exit(t_shell *shell, int status);
+int		special_cd(char **argv, t_shell *shell, char **path, int *is_allocated);
 
 #endif
