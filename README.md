@@ -19,12 +19,12 @@ This project is a custom implementation of a lightweight shell, mimicking the co
 ## Instructions
 **`Prerequisites`**: Requires a C compiler (GCC/Clang), Make, and the standard readline library.
 
-**`Compilation`**: Run the make command at the root of the repository to build the executable. Other standard rules include `make clean`, `make fclean`, and `make re`.
+**`Compilation`**: Run the `make` command at the root of the repository to build the executable. Other standard rules include `make clean`, `make fclean`, and `make re`.
 
 **`Running the Shell`**: Start the program by executing `./minishell` in your terminal. You can begin entering standard shell commands.
 
 
-## BUILTIN COMMANDS
+### BUILTIN COMMANDS
 `echo` with -n flag support
 
 `cd` relative and absolute path support
@@ -48,8 +48,8 @@ If you are interested in building your own shell or diving deeper into Unix syst
 - [
 Communicating between processes (using pipes) in C](https://www.youtube.com/watch?v=Mqb2dVRe0uo&t=435s)
 
-## AI Usage:
-AI was used in this project to assist with debugging edge cases, explaining concepts, writing documentation.
+### AI Usage
+AI was used throughout this project to assist with debugging edge cases, explaining complex concepts, and improving the clarity and quality of the code. It was also used to help write and organize documentation, making the project easier to understand, maintain, and use.
 
 ## AUTHORS
 [wiboonpr (New)](https://github.com/Wirayabovorn007)
