@@ -1,4 +1,4 @@
-This project has been created as part of the 42 curriculum by wiboonpr, pphuntph.
+*This project has been created as part of the 42 curriculum by wiboonpr, pphuntph.*
 
 # Minishell - **As beautiful as a shell**
 ## Description

@@ -28,6 +28,8 @@ void	check_fd_error(t_cmd *cmd, int fd, char *val)
 	{
 		cmd->redir_error = 1;
 		cmd->redir_errno = errno;
+		if (cmd->redir_error_file)
+			free(cmd->redir_error_file);
 		cmd->redir_error_file = ft_strdup(val);
 	}
 	else

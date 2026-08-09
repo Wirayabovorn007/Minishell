@@ -63,6 +63,8 @@ void	test_file_access(t_cmd *cmd, t_token *tok, char *val)
 	{
 		cmd->redir_error = 1;
 		cmd->redir_errno = errno;
+		if (cmd->redir_error_file)
+			free(cmd->redir_error_file);
 		cmd->redir_error_file = ft_strdup(val);
 	}
 	else if (fd > 0)
