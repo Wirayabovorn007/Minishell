@@ -20,7 +20,7 @@ int	print_cd_err(void)
 	return (1);
 }
 
-int special_cd(char **argv, t_shell *shell, char **path, int *is_allocated)
+int	special_cd(char **argv, t_shell *shell, char **path, int *is_allocated)
 {
 	if (ft_strcmp(argv[1], "-") == 0)
 	{

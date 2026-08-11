@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-extern int	g_signal;
+int	g_signal = 0;
 
 static void	process_input(char *line, t_shell *shell)
 {

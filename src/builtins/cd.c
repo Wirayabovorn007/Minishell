@@ -87,7 +87,7 @@ static int	update_dir_and_env(t_shell *shell, char *path)
 	return (0);
 }
 
-int builtin_cd(char **argv, t_shell *shell)
+int	builtin_cd(char **argv, t_shell *shell)
 {
 	char	*path;
 	int		ret;

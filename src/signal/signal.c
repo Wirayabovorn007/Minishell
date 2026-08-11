@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-int	g_signal = 0;
-
 void	sigint_handler(int sig)
 {
 	g_signal = sig;
