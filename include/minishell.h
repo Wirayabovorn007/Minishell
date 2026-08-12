@@ -87,7 +87,6 @@ t_cmd	*new_cmd(void);
 void	add_cmd(t_cmd **list, t_cmd *new);
 void	free_cmds(t_cmd *cmds);
 void	free_envp(char **envp);
-void	test_file_access(t_cmd *cmd, t_token *tok, char *val);
 
 // builtin
 int		is_builtin(char *cmd);

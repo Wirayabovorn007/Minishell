@@ -38,7 +38,6 @@ void	handle_redir(t_cmd *cmd, t_token **tok, t_shell *shell)
 	expanded = expand_env(next->value, shell);
 	val = remove_quotes(expanded);
 	free(expanded);
-	test_file_access(cmd, *tok, val);
 	if (!check_ambiguous(cmd, *tok, next, val))
 		set_redir_target(cmd, *tok, next, val);
 	*tok = next;
